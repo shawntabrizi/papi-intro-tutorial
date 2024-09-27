@@ -1,0 +1,31 @@
+diff --git a/index.ts b/index.ts
+index 31c77fe..5c3dccf 100644
+--- a/index.ts
++++ b/index.ts
+@@ -1,4 +1,4 @@
+-// TODO: Import `process` from `node:process`.
++import process from 'node:process';
+ import { getWsProvider } from "polkadot-api/ws-provider/web";
+ import { createClient, type PolkadotClient } from "polkadot-api";
+ 
+@@ -9,12 +9,12 @@ function makeClient(endpoint: string): PolkadotClient {
+ 	return client;
+ }
+ 
+-// TODO:
+-// - Create a new `async` function called `main`.
+-//   - Call `makeClient` with the endpoint `"wss://rpc.polkadot.io"`.
+-//   - Assign the result to a new constant `polkadotClient`.
+-//   - Print the `polkadotClient` object with `console.log` to take a peek inside.
+-//   - Use `console.log` to print a "Done!" message to show you app completed successfully.
+-//   - Exit the process by calling `process.exit(0)`.
++async function main() {
++	const polkadotClient = makeClient("wss://rpc.polkadot.io");
++	console.log({ polkadotClient });
+ 
+-// TODO: Call your `main()` function.
++	console.log(`Done!`);
++	process.exit(0);
++}
++
++main()
