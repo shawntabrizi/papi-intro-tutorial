@@ -1,9 +1,9 @@
 diff --git a/.gitignore b/.gitignore
 new file mode 100644
-index 0000000..9b1ee42
+index 0000000..284c24e
 --- /dev/null
 +++ b/.gitignore
-@@ -0,0 +1,175 @@
+@@ -0,0 +1,178 @@
 +# Based on https://raw.githubusercontent.com/github/gitignore/main/Node.gitignore
 +
 +# Logs
@@ -179,6 +179,9 @@ index 0000000..9b1ee42
 +
 +# Finder (MacOS) folder config
 +.DS_Store
++
++book
++steps
 diff --git a/bun.lockb b/bun.lockb
 new file mode 100755
 index 0000000..72f1cec
