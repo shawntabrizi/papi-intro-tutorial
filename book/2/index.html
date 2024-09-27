@@ -1,0 +1,498 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>2. Lets PAPI this...! - Gitorial mdBook Template</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom/styles.css">
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../0/index.html"><strong aria-hidden="true">1.</strong> 0. Introduction to the new Polkadot API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../1/index.html"><strong aria-hidden="true">1.1.</strong> 1. Initialize a Basic TypeScript Project</a></li><li class="chapter-item expanded "><a href="../2/index.html" class="active"><strong aria-hidden="true">1.2.</strong> 2. Lets PAPI this...!</a></li><li class="chapter-item expanded "><a href="../3/index.html"><strong aria-hidden="true">1.3.</strong> 3. TODO</a></li><li class="chapter-item expanded "><a href="../4/index.html"><strong aria-hidden="true">1.4.</strong> 4. TODO</a></li><li class="chapter-item expanded "><a href="../5/index.html"><strong aria-hidden="true">1.5.</strong> 5. Solution</a></li><li class="chapter-item expanded "><a href="../6/index.html"><strong aria-hidden="true">1.6.</strong> 6. TODO</a></li><li class="chapter-item expanded "><a href="../7/index.html"><strong aria-hidden="true">1.7.</strong> 7. TODO</a></li><li class="chapter-item expanded "><a href="../8/index.html"><strong aria-hidden="true">1.8.</strong> 8. TODO</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Gitorial mdBook Template</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/gitorial-sdk/mdbook-template" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <div class="content-row">
+<div class="content-col">
+<h1 id="lets-papi-this"><a class="header" href="#lets-papi-this">Lets PAPI this...!</a></h1>
+<p>Now that our project is ready, we can init the setup for polkadot api.
+I, very much, propose once again to have a look on <a href="https://papi.how">Polkadot API's documentation (https://papi.how)</a>, but in case, you either prefer this format, or you have been there and are back, then let's go for it. :)</p>
+<h2 id="papi-installation"><a class="header" href="#papi-installation">PAPI installation</a></h2>
+<p>Of course we need, first of all, to add the <code>polkadot-api</code> dependency in our project.
+Lets do that by running:</p>
+<pre><code class="language-shell">$ bun install polkadot-api
+</code></pre>
+<p>That’s it! The installation is all set.</p>
+<p>Ready for the next step? We’ll be configuring PAPI.</p>
+<p>But before we dive in, it’s important to get a basic understanding of how PAPI works.</p>
+<h2 id="what-our-examples-will-be"><a class="header" href="#what-our-examples-will-be">What our examples will be</a></h2>
+<p>Throughout this tutorial, we'll explore the following Polkadot API (PAPI) use cases for connecting to the network:</p>
+<ol>
+<li><strong>Connecting to the Polkadot Relay Chain:</strong> We’ll start by using a WsProvider provided by PAPI to create a client that connects to the Polkadot relay chain's RPC server. We’ll then log the finalized block number and hash as they are produced.</li>
+<li><strong>Connecting to the People Parachain:</strong> Next, we’ll apply a similar approach to create a client that connects to the RPC server of the People system parachain. Here, we’ll log specific information from an account’s address.</li>
+<li><strong>Multi-Chain Connection:</strong> Then, we’ll set up a multi-chain connection to retrieve information from both the People and Collective system chains.</li>
+<li><strong>Using the Smoldot Provider:</strong> Finally, we’ll repeat all of the above steps using the Smoldot provider that PAPI includes, allowing us to see how it compares with the WsProvider.</li>
+</ol>
+<p>You might be wondering why I’m bringing this up at this point. Here’s why:</p>
+<p>To properly configure each project with the Polkadot API, it's important to know which chains we’ll be interacting with upfront. This allows us to set everything up correctly from the start.</p>
+<p>While it’s certainly possible to add new chains later if needed, for the sake of this tutorial, we’ll configure everything in advance.
+This approach keeps things organized and helps ensure a smoother workflow.</p>
+<p>Given the steps we’ll be taking, we’ll need to configure three different chains:</p>
+<ul>
+<li>The <code>polkadot</code> relay chain</li>
+<li>The <code>people</code> system parachain and</li>
+<li>The <code>collectives</code> parachain</li>
+</ul>
+<h2 id="configuring-polkadot-api"><a class="header" href="#configuring-polkadot-api">Configuring Polkadot API</a></h2>
+<p>Polkadot API comes with a handy bundle of chainspecs for both <a href="https://github.com/polkadot-api/polkadot-api/tree/main/packages/known-chains"><code>well-known-chains</code> and <code>system-chains</code></a> to make your life easier.</p>
+<p>This means you don’t have to worry about finding endpoints for fetching metadata or chainspecs (which are needed for the light client). All of this is bundled right into PAPI.</p>
+<p>As we move forward, you’ll see just how helpful this can be in simplifying the setup process.</p>
+<h3 id="adding-polkadot-chain"><a class="header" href="#adding-polkadot-chain">Adding polkadot chain</a></h3>
+<p>Lets get going with this and run:</p>
+<pre><code class="language-shell">$ bunx papi add dot -n polkadot
+</code></pre>
+<blockquote>
+<p>Note: bunx is the equivelent package runner for bun (as npx is for npm).
+You can read <a href="https://bun.sh/docs/cli/bunx">more here</a>.</p>
+</blockquote>
+<p>What happened here?
+Using <code>bunx</code> we asked (politely) from Polkadot API to fetch for you, in a <code>dot</code> "variable", the metadata from (the well-known-chain) <code>polkadot</code>.</p>
+<p>The outcome of the command should be the following:</p>
+<pre><code class="language-shell">$ bunx papi add dot -n polkadot
+
+✔ Metadata saved as .papi/metadata/dot.scale
+Saved new spec "dot"
+Reading metadata
+CLI Building entry: .papi/descriptors/src/index.ts
+CLI Using tsconfig: tsconfig.json
+CLI tsup v8.3.0
+CLI Target: esnext
+CJS Build start
+ESM Build start
+ESM .papi/descriptors/dist/index.mjs                  9.88 KB
+ESM .papi/descriptors/dist/metadataTypes-FYTIEX4M.mjs 146.06 KB
+ESM .papi/descriptors/dist/descriptors-BGFWDDEF.mjs   25.73 KB
+ESM ⚡️ Build success in 20ms
+CJS .papi/descriptors/dist/index.js 190.36 KB
+CJS ⚡️ Build success in 20ms
+Compilation started
+Compilation successful
+bun install
+bun install v1.1.7 (b0b7db5c)
+
+ + @polkadot-api/descriptors@.papi/descriptors
+
+ 1 package installed [19.00ms]
+</code></pre>
+<p>So what PAPI did for you, behind the scenes?</p>
+<ol>
+<li>Created a directory called <code>.papi</code> and under it in the dir <code>metadata</code> saved all the latest metadata for <code>polkadot</code>;</li>
+<li>In your <code>package.json</code> file added a dependency link to the descriptors that are created: <code>"@polkadot-api/descriptors": "file:.papi/descriptors",</code>.</li>
+<li>Under the <code>.papi</code> directory, created a PAPI configuration file called <code>polkadot-api.json</code> that looks like this:</li>
+</ol>
+<pre><code>{
+ "version": 0,
+ "descriptorPath": ".papi/descriptors",
+ "entries": {
+   "dot": {
+     "chain": "polkadot",
+     "metadata": ".papi/metadata/dot.scale"
+   }
+ }
+}
+</code></pre>
+<p>and contains in <code>entries</code> the "variable" <code>dot</code>, linked to the respective chain and metadata;</p>
+<blockquote>
+<p>Note: the command <code>bunx papi add dot -n polkadot</code> is same if we used an rpc endpoint with the flag -w, meaning:</p>
+<p><code>$ bunx papi add -w wss://polkadot-collectives-rpc.polkadot.io dot</code></p>
+<p>but since <code>polkadot</code> is a known chain, the first command will suffice</p>
+</blockquote>
+<p>In just few words - configured all the paths and needed dependencies with just 1 command.</p>
+<h3 id="adding-people-and-collectives-parachains"><a class="header" href="#adding-people-and-collectives-parachains">Adding people and collectives parachains</a></h3>
+<p>Lets run the commands for the rest of the chains we need:</p>
+<pre><code class="language-shell">$ bunx papi add people -n polkadot_people
+</code></pre>
+<p>and</p>
+<pre><code class="language-shell">$ bunx papi add collectives -n polkadot_collectives
+</code></pre>
+<h3 id="configuration-complete"><a class="header" href="#configuration-complete">Configuration Complete</a></h3>
+<p>Configuration is now finished! All the necessary chains are set up in your project, and the metadata is neatly organized in a structured directory.</p>
+<blockquote>
+<p>Note: It’s a great idea to add PAPI to the "postinstall" script in your package.json to automate the generation of types after installation. (see <code>package.json</code> file for how that looks.)</p>
+</blockquote>
+</div>
+<div class="content-col">
+<div class="tab">
+  <button class="maintab tablinks active" onclick="switchMainTab(event, 'Source')">Source</button>
+  <button class="maintab tablinks" onclick="switchMainTab(event, 'Diff')">Diff</button>
+</div>
+<div id="Source" class="maintab tabcontent active">
+<div class="tab">
+<button class="subtab tablinks file-source file-modified active" onclick="switchSubTab(event, 'bun.lockb')" data-id="bun.lockb">bun.lockb</button>
+<button class="subtab tablinks file-source file-modified" onclick="switchSubTab(event, 'package.json')" data-id="package.json">package.json</button>
+</div>
+<div id="source/bun.lockb" class="subtab tabcontent active" data-id="bun.lockb">
+<pre><code class="language-text">{{#include ./source/bun.lockb}}
+</code></pre>
+</div>
+<div id="source/package.json" class="subtab tabcontent" data-id="package.json">
+<pre><code class="language-json">{
+  "name": "papi-intro-tutorial",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "postinstall": "papi"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@polkadot-api/descriptors": "file:.papi/descriptors",
+    "polkadot-api": "^1.3.2"
+  }
+}
+</code></pre>
+</div>
+</div>
+<div id="Diff" class="maintab tabcontent">
+<div class="tab">
+	<button class="difftab tablinks active" onclick="switchDiff(event, 'changes.diff')" data-id="changes.diff">changes.diff</button>
+</div>
+<div id="changes.diff" class="difftab tabcontent active" data-id="changes.diff">
+<pre><code class="language-diff">diff --git a/.papi/descriptors/.gitignore b/.papi/descriptors/.gitignore
+new file mode 100644
+index 0000000..46d96ea
+--- /dev/null
++++ b/.papi/descriptors/.gitignore
+@@ -0,0 +1,3 @@
++*
++!.gitignore
++!package.json
+\ No newline at end of file
+diff --git a/.papi/descriptors/package.json b/.papi/descriptors/package.json
+new file mode 100644
+index 0000000..84c24fc
+--- /dev/null
++++ b/.papi/descriptors/package.json
+@@ -0,0 +1,24 @@
++{
++  "version": "0.1.0-autogenerated.12568091635523490236",
++  "name": "@polkadot-api/descriptors",
++  "files": [
++    "dist"
++  ],
++  "exports": {
++    ".": {
++      "types": "./dist/index.d.ts",
++      "module": "./dist/index.mjs",
++      "import": "./dist/index.mjs",
++      "require": "./dist/index.js"
++    },
++    "./package.json": "./package.json"
++  },
++  "main": "./dist/index.js",
++  "module": "./dist/index.mjs",
++  "browser": "./dist/index.mjs",
++  "types": "./dist/index.d.ts",
++  "sideEffects": false,
++  "peerDependencies": {
++    "polkadot-api": "*"
++  }
++}
+diff --git a/.papi/metadata/dot.scale b/.papi/metadata/dot.scale
+new file mode 100644
+index 0000000..9ddad64
+Binary files /dev/null and b/.papi/metadata/dot.scale differ
+diff --git a/.papi/metadata/people.scale b/.papi/metadata/people.scale
+new file mode 100644
+index 0000000..7dd1ad1
+Binary files /dev/null and b/.papi/metadata/people.scale differ
+diff --git a/.papi/polkadot-api.json b/.papi/polkadot-api.json
+new file mode 100644
+index 0000000..813e5e2
+--- /dev/null
++++ b/.papi/polkadot-api.json
+@@ -0,0 +1,14 @@
++{
++  "version": 0,
++  "descriptorPath": ".papi/descriptors",
++  "entries": {
++    "dot": {
++      "chain": "polkadot",
++      "metadata": ".papi/metadata/dot.scale"
++    },
++    "people": {
++      "chain": "polkadot_people",
++      "metadata": ".papi/metadata/people.scale"
++    }
++  }
++}
+\ No newline at end of file
+diff --git a/bun.lockb b/bun.lockb
+index 72f1cec..42ec40a 100755
+Binary files a/bun.lockb and b/bun.lockb differ
+diff --git a/package.json b/package.json
+index 22880ef..174c49d 100644
+--- a/package.json
++++ b/package.json
+@@ -2,10 +2,17 @@
+   "name": "papi-intro-tutorial",
+   "module": "index.ts",
+   "type": "module",
++  "scripts": {
++    "postinstall": "papi"
++  },
+   "devDependencies": {
+     "@types/bun": "latest"
+   },
+   "peerDependencies": {
+     "typescript": "^5.0.0"
++  },
++  "dependencies": {
++    "@polkadot-api/descriptors": "file:.papi/descriptors",
++    "polkadot-api": "^1.3.2"
+   }
+ }
+\ No newline at end of file
+</code></pre>
+</div>
+</div>
+</div>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../1/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../3/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../1/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../3/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../custom/tabs.js"></script>
+
+
+    </div>
+    </body>
+</html>

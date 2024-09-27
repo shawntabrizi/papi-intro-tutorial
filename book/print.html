@@ -1,0 +1,2245 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Gitorial mdBook Template</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom/styles.css">
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="0/index.html"><strong aria-hidden="true">1.</strong> 0. Introduction to the new Polkadot API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="1/index.html"><strong aria-hidden="true">1.1.</strong> 1. Initialize a Basic TypeScript Project</a></li><li class="chapter-item expanded "><a href="2/index.html"><strong aria-hidden="true">1.2.</strong> 2. Lets PAPI this...!</a></li><li class="chapter-item expanded "><a href="3/index.html"><strong aria-hidden="true">1.3.</strong> 3. TODO</a></li><li class="chapter-item expanded "><a href="4/index.html"><strong aria-hidden="true">1.4.</strong> 4. TODO</a></li><li class="chapter-item expanded "><a href="5/index.html"><strong aria-hidden="true">1.5.</strong> 5. Solution</a></li><li class="chapter-item expanded "><a href="6/index.html"><strong aria-hidden="true">1.6.</strong> 6. TODO</a></li><li class="chapter-item expanded "><a href="7/index.html"><strong aria-hidden="true">1.7.</strong> 7. TODO</a></li><li class="chapter-item expanded "><a href="8/index.html"><strong aria-hidden="true">1.8.</strong> 8. TODO</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Gitorial mdBook Template</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/gitorial-sdk/mdbook-template" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <div class="content-section">
+<h1 id="introduction-to-the-new-polkadot-api"><a class="header" href="#introduction-to-the-new-polkadot-api">Introduction to the new Polkadot API</a></h1>
+<p>Welcome to the first interactive tutorial of the new Polkadot API.</p>
+<p>This is a guided tutorial intended to teach readers how to setup, use and interact with Substrate based chains by using the new <a href="https://github.com/polkadot-api/polkadot-api">Polkadot-API</a>.</p>
+<h3 id="what-is-the-fuzz-about"><a class="header" href="#what-is-the-fuzz-about">What is the fuzz about</a></h3>
+<p>The new Polkadot API (PAPI) is:</p>
+<ul>
+<li>🪶 <strong>light client first</strong>: built on top of the <a href="https://paritytech.github.io/json-rpc-interface-spec/">new JSON-RPC spec</a> to fully leverage the potential of light-clients;</li>
+<li>💡 delightful <strong>TypeScript support</strong> with types and docs generated from on-chain metadata;</li>
+<li>📋 first class support for <strong>storage</strong> reads, <strong>constants</strong>, <strong>transactions</strong>, <strong>events</strong> and <strong>runtime calls</strong>;</li>
+<li>🔗 perform <strong>multiple connections</strong> to different chains simultaneously;</li>
+<li>🔄 prepare for upcoming <strong>runtime updates</strong> by generating multiple descriptors and performing <strong>compatibility checks</strong>;</li>
+<li>🚀 <strong>performant and lightweight</strong>: ships with multiple subpaths, so dApps don't bundle unnecessary assets;</li>
+<li>🔢 uses <strong>native BigInt</strong>, instead of large BigNumber libraries;</li>
+<li>⚡ leverages dynamic imports to favour <strong>faster loading times</strong>;</li>
+<li>✨ <strong>promise-based and Observable-based APIs</strong>: use the one that best suit your needs and/or coding style;</li>
+<li>🔑 use <strong>signers</strong> from your browser extension, or from a private key;</li>
+<li>🧩 easy integration with <strong>PJS-based extensions</strong>.</li>
+</ul>
+<p>While Polkadot API is a very interesting approach and way of intertacting with Substrate based chains, I have found it quite challenging to twist my mindset from existing approaches (e.g. PolkadotJS) to installing and using Polkadot-API.</p>
+<p>Having said though, after few retries and with some help of the creators (<a href="https://github.com/josepot">Josep</a> and <a href="https://github.com/voliva">Victor</a>) I found myself loving, using it and adding it in existing and new projects.</p>
+<h3 id="what-this-tutorial-is-about"><a class="header" href="#what-this-tutorial-is-about">What this tutorial is about</a></h3>
+<p>This tutorial is meant for developers who want to install Polkadot-API (or aka PAPI) in a project, add correctly some chains in the project and interact with them with various ways (web socket, smoldot etc.).</p>
+<p>In order to address this, we will setup a simple TS project with the minimum needed configuration, run the basic steps needed to "integrate"/"add" (use whatever word fits you best here), the chains we need to connect to in our project and then create some sample calls.</p>
+<h3 id="what-this-tutorial-is-not-about"><a class="header" href="#what-this-tutorial-is-not-about">What this tutorial is <strong>not</strong> about</a></h3>
+<ul>
+<li>
+<p><strong>Not a Comprehensive Guide:</strong> This tutorial focuses on the bare minimum needed to use the Polkadot API in a TypeScript project. It will help you set up a basic project, integrate various chains (including well-known, system chains, or those from a given chainspec), and utilize the Polkadot API.</p>
+</li>
+<li>
+<p><strong>Not a Substitute for Foundational Knowledge:</strong> While this tutorial is designed to be accessible even if you have little prior experience with the Polkadot API or interactions with Substrate chains, it does not replace a basic introduction to these topics. We recommend familiarizing yourself with the fundamentals, either before or alongside this tutorial.</p>
+</li>
+<li>
+<p><strong>Not an All-in-One Resource:</strong> This is a step-by-step guide aimed at helping you set up the Polkadot API in your project. It is highly recommended to refer to the official <a href="http://papi.how">Polkadot API documentation (http://papi.how)</a> throughout your learning process and ensure you have a basic understanding of <a href="https://www.typescriptlang.org/">Typescript</a>.</p>
+</li>
+<li>
+<p><strong>Not for Experts Only:</strong> You don’t need to be an expert in every topic covered here, but having some exposure to them will enhance your understanding.</p>
+</li>
+</ul>
+<p>This tutorial is divided into sections, each targeting specific learning goals and offering natural pause points. All content is open source and freely accessible <a href="https://github.com/wirednkod/papi-intro-tutorial">here</a>.</p>
+<p>Suggestions for improvement, comments, issues, and pull requests are welcome.</p>
+<p>Enjoy, and I hope you find this tutorial informative and valuable!</p>
+</div>
+<div style="break-before: page; page-break-before: always;"></div><div class="content-row">
+<div class="content-col">
+<h1 id="initialize-a-basic-typescript-project"><a class="header" href="#initialize-a-basic-typescript-project">Initialize a Basic TypeScript Project</a></h1>
+<p>In this step, we'll kick off our journey by setting up a basic TypeScript project where we'll explore different integration examples of the Polkadot API (or PAPI, as I'll call it from here on out—because who doesn’t love saving a few keystrokes?).</p>
+<p>While you could use other toolkits for JavaScript and TypeScript apps (like Vite or simply node), I've opted for Bun. Why? Because it's the quickest way to get a TypeScript-ready project up and running without getting bogged down in the nitty-gritty details.</p>
+<p>Keep in mind, this tutorial is focused on showing you how to set up PAPI and work with various providers. We're not diving deep into how to set up a TypeScript project from scratch—there are plenty of resources out there for that.</p>
+<p>Now that we’ve got that covered, let’s jump into the first step!</p>
+<blockquote>
+<p>Note: Installing Bun
+Before we dive in, you'll need to have Bun installed on your system. For the installation process, <a href="https://bun.sh/docs/installation#installing">please follow the official Bun documentation</a>.</p>
+<p>From this point on, I'll assume that Bun is already installed and ready to go!</p>
+</blockquote>
+<h3 id="bun-init"><a class="header" href="#bun-init">bun init</a></h3>
+<p>Create an empty directory and <code>cd</code> into it:</p>
+<pre><code class="language-bash">$ mkdir polkadot-api-tutorial &amp;&amp; cd polkadot-api-tutorial
+</code></pre>
+<p>Scaffold an empty Bun project with the interactive <code>bun init</code> command (Press <code>enter</code> to accept the default answer for each prompt):</p>
+<pre><code class="language-shell">$ bun init
+
+bun init helps you get started with a minimal project and tries to
+guess sensible defaults. Press ^C anytime to quit.
+
+package name (polkadot-api-tutorial):
+entry point (index.ts):
+
+Done! A package.json file was saved in the current directory.
+ + index.ts
+ + .gitignore
+ + tsconfig.json (for editor auto-complete)
+ + README.md
+
+To get started, run:
+  bun run index.ts
+</code></pre>
+<p>Once completed the following files should appear in your structure:</p>
+<ol>
+<li><strong>package.json</strong>: This file is the heart of your project’s configuration. It defines the metadata for your project, including the project name, version, dependencies, scripts, and more. It's similar to the package.json file used in npm projects.</li>
+<li><strong>bun.lockb:</strong> This is Bun’s lock file, similar to package-lock.json in npm or yarn.lock in Yarn.</li>
+<li><strong>tsconfig.json:</strong> This file is automatically generated as TypeScript is installed by default with <code>bun</code> (one of the reasons I chose this over other).</li>
+<li><strong>.gitignore:</strong> This file specifies which files and directories should be ignored by Git when committing to a repository.
+Purpose: It typically includes common files like node_modules/, log files, and lock files that should not be tracked in version control.</li>
+<li><strong>README.md:</strong> The basic markdown file that is often generated as part of the project setup and (actually) is the one you are reading right now</li>
+<li><strong>index.ts</strong>: The initial typescript index file (where our "entry" is), and it should read at this point the following 1 line of code: <code>console.log("Hello via Bun!");</code></li>
+</ol>
+<p>In order to make sure that everything works as expected and the project is correctly setup, feel free and run the following command:</p>
+<pre><code class="language-shell">$ bun run index.ts
+</code></pre>
+<p>You should see the following output:</p>
+<pre><code class="language-shell">Hello via Bun!
+</code></pre>
+<p>That was it.. our project's initial setup is ready and now we can move forward to setup Polkadot API in the project.</p>
+</div>
+<div class="content-col">
+<div class="tab">
+  <button class="maintab tablinks active" onclick="switchMainTab(event, 'Source')">Source</button>
+  <button class="maintab tablinks" onclick="switchMainTab(event, 'Diff')">Diff</button>
+</div>
+<div id="Source" class="maintab tabcontent active">
+<div class="tab">
+<button class="subtab tablinks file-source file-added active" onclick="switchSubTab(event, 'bun.lockb')" data-id="bun.lockb">bun.lockb</button>
+<button class="subtab tablinks file-source file-added" onclick="switchSubTab(event, 'index.ts')" data-id="index.ts">index.ts</button>
+<button class="subtab tablinks file-source file-added" onclick="switchSubTab(event, 'package.json')" data-id="package.json">package.json</button>
+<button class="subtab tablinks file-source file-added" onclick="switchSubTab(event, 'tsconfig.json')" data-id="tsconfig.json">tsconfig.json</button>
+</div>
+<div id="source/bun.lockb" class="subtab tabcontent active" data-id="bun.lockb">
+<pre><code class="language-text">{{#include ./source/bun.lockb}}
+</code></pre>
+</div>
+<div id="source/index.ts" class="subtab tabcontent" data-id="index.ts">
+<pre><code class="language-ts">console.log("Hello via Bun!");
+</code></pre>
+</div>
+<div id="source/package.json" class="subtab tabcontent" data-id="package.json">
+<pre><code class="language-json">{
+  "name": "papi-intro-tutorial",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
+</code></pre>
+</div>
+<div id="source/tsconfig.json" class="subtab tabcontent" data-id="tsconfig.json">
+<pre><code class="language-json">{
+  "compilerOptions": {
+    // Enable latest features
+    "lib": ["ESNext", "DOM"],
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleDetection": "force",
+    "jsx": "react-jsx",
+    "allowJs": true,
+
+    // Bundler mode
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
+
+    // Best practices
+    "strict": true,
+    "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": true,
+
+    // Some stricter flags (disabled by default)
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noPropertyAccessFromIndexSignature": false
+  }
+}
+</code></pre>
+</div>
+</div>
+<div id="Diff" class="maintab tabcontent">
+<div class="tab">
+	<button class="difftab tablinks active" onclick="switchDiff(event, 'changes.diff')" data-id="changes.diff">changes.diff</button>
+</div>
+<div id="changes.diff" class="difftab tabcontent active" data-id="changes.diff">
+<pre><code class="language-diff">diff --git a/.gitignore b/.gitignore
+new file mode 100644
+index 0000000..9b1ee42
+--- /dev/null
++++ b/.gitignore
+@@ -0,0 +1,175 @@
++# Based on https://raw.githubusercontent.com/github/gitignore/main/Node.gitignore
++
++# Logs
++
++logs
++_.log
++npm-debug.log_
++yarn-debug.log*
++yarn-error.log*
++lerna-debug.log*
++.pnpm-debug.log*
++
++# Caches
++
++.cache
++
++# Diagnostic reports (https://nodejs.org/api/report.html)
++
++report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
++
++# Runtime data
++
++pids
++_.pid
++_.seed
++*.pid.lock
++
++# Directory for instrumented libs generated by jscoverage/JSCover
++
++lib-cov
++
++# Coverage directory used by tools like istanbul
++
++coverage
++*.lcov
++
++# nyc test coverage
++
++.nyc_output
++
++# Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
++
++.grunt
++
++# Bower dependency directory (https://bower.io/)
++
++bower_components
++
++# node-waf configuration
++
++.lock-wscript
++
++# Compiled binary addons (https://nodejs.org/api/addons.html)
++
++build/Release
++
++# Dependency directories
++
++node_modules/
++jspm_packages/
++
++# Snowpack dependency directory (https://snowpack.dev/)
++
++web_modules/
++
++# TypeScript cache
++
++*.tsbuildinfo
++
++# Optional npm cache directory
++
++.npm
++
++# Optional eslint cache
++
++.eslintcache
++
++# Optional stylelint cache
++
++.stylelintcache
++
++# Microbundle cache
++
++.rpt2_cache/
++.rts2_cache_cjs/
++.rts2_cache_es/
++.rts2_cache_umd/
++
++# Optional REPL history
++
++.node_repl_history
++
++# Output of 'npm pack'
++
++*.tgz
++
++# Yarn Integrity file
++
++.yarn-integrity
++
++# dotenv environment variable files
++
++.env
++.env.development.local
++.env.test.local
++.env.production.local
++.env.local
++
++# parcel-bundler cache (https://parceljs.org/)
++
++.parcel-cache
++
++# Next.js build output
++
++.next
++out
++
++# Nuxt.js build / generate output
++
++.nuxt
++dist
++
++# Gatsby files
++
++# Comment in the public line in if your project uses Gatsby and not Next.js
++
++# https://nextjs.org/blog/next-9-1#public-directory-support
++
++# public
++
++# vuepress build output
++
++.vuepress/dist
++
++# vuepress v2.x temp and cache directory
++
++.temp
++
++# Docusaurus cache and generated files
++
++.docusaurus
++
++# Serverless directories
++
++.serverless/
++
++# FuseBox cache
++
++.fusebox/
++
++# DynamoDB Local files
++
++.dynamodb/
++
++# TernJS port file
++
++.tern-port
++
++# Stores VSCode versions used for testing VSCode extensions
++
++.vscode-test
++
++# yarn v2
++
++.yarn/cache
++.yarn/unplugged
++.yarn/build-state.yml
++.yarn/install-state.gz
++.pnp.*
++
++# IntelliJ based IDEs
++.idea
++
++# Finder (MacOS) folder config
++.DS_Store
+diff --git a/bun.lockb b/bun.lockb
+new file mode 100755
+index 0000000..72f1cec
+Binary files /dev/null and b/bun.lockb differ
+diff --git a/index.ts b/index.ts
+new file mode 100644
+index 0000000..2a5e4b8
+--- /dev/null
++++ b/index.ts
+@@ -0,0 +1 @@
++console.log("Hello via Bun!");
+diff --git a/package.json b/package.json
+new file mode 100644
+index 0000000..22880ef
+--- /dev/null
++++ b/package.json
+@@ -0,0 +1,11 @@
++{
++  "name": "papi-intro-tutorial",
++  "module": "index.ts",
++  "type": "module",
++  "devDependencies": {
++    "@types/bun": "latest"
++  },
++  "peerDependencies": {
++    "typescript": "^5.0.0"
++  }
++}
+\ No newline at end of file
+diff --git a/tsconfig.json b/tsconfig.json
+new file mode 100644
+index 0000000..238655f
+--- /dev/null
++++ b/tsconfig.json
+@@ -0,0 +1,27 @@
++{
++  "compilerOptions": {
++    // Enable latest features
++    "lib": ["ESNext", "DOM"],
++    "target": "ESNext",
++    "module": "ESNext",
++    "moduleDetection": "force",
++    "jsx": "react-jsx",
++    "allowJs": true,
++
++    // Bundler mode
++    "moduleResolution": "bundler",
++    "allowImportingTsExtensions": true,
++    "verbatimModuleSyntax": true,
++    "noEmit": true,
++
++    // Best practices
++    "strict": true,
++    "skipLibCheck": true,
++    "noFallthroughCasesInSwitch": true,
++
++    // Some stricter flags (disabled by default)
++    "noUnusedLocals": false,
++    "noUnusedParameters": false,
++    "noPropertyAccessFromIndexSignature": false
++  }
++}
+</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div style="break-before: page; page-break-before: always;"></div><div class="content-row">
+<div class="content-col">
+<h1 id="lets-papi-this"><a class="header" href="#lets-papi-this">Lets PAPI this...!</a></h1>
+<p>Now that our project is ready, we can init the setup for polkadot api.
+I, very much, propose once again to have a look on <a href="https://papi.how">Polkadot API's documentation (https://papi.how)</a>, but in case, you either prefer this format, or you have been there and are back, then let's go for it. :)</p>
+<h2 id="papi-installation"><a class="header" href="#papi-installation">PAPI installation</a></h2>
+<p>Of course we need, first of all, to add the <code>polkadot-api</code> dependency in our project.
+Lets do that by running:</p>
+<pre><code class="language-shell">$ bun install polkadot-api
+</code></pre>
+<p>That’s it! The installation is all set.</p>
+<p>Ready for the next step? We’ll be configuring PAPI.</p>
+<p>But before we dive in, it’s important to get a basic understanding of how PAPI works.</p>
+<h2 id="what-our-examples-will-be"><a class="header" href="#what-our-examples-will-be">What our examples will be</a></h2>
+<p>Throughout this tutorial, we'll explore the following Polkadot API (PAPI) use cases for connecting to the network:</p>
+<ol>
+<li><strong>Connecting to the Polkadot Relay Chain:</strong> We’ll start by using a WsProvider provided by PAPI to create a client that connects to the Polkadot relay chain's RPC server. We’ll then log the finalized block number and hash as they are produced.</li>
+<li><strong>Connecting to the People Parachain:</strong> Next, we’ll apply a similar approach to create a client that connects to the RPC server of the People system parachain. Here, we’ll log specific information from an account’s address.</li>
+<li><strong>Multi-Chain Connection:</strong> Then, we’ll set up a multi-chain connection to retrieve information from both the People and Collective system chains.</li>
+<li><strong>Using the Smoldot Provider:</strong> Finally, we’ll repeat all of the above steps using the Smoldot provider that PAPI includes, allowing us to see how it compares with the WsProvider.</li>
+</ol>
+<p>You might be wondering why I’m bringing this up at this point. Here’s why:</p>
+<p>To properly configure each project with the Polkadot API, it's important to know which chains we’ll be interacting with upfront. This allows us to set everything up correctly from the start.</p>
+<p>While it’s certainly possible to add new chains later if needed, for the sake of this tutorial, we’ll configure everything in advance.
+This approach keeps things organized and helps ensure a smoother workflow.</p>
+<p>Given the steps we’ll be taking, we’ll need to configure three different chains:</p>
+<ul>
+<li>The <code>polkadot</code> relay chain</li>
+<li>The <code>people</code> system parachain and</li>
+<li>The <code>collectives</code> parachain</li>
+</ul>
+<h2 id="configuring-polkadot-api"><a class="header" href="#configuring-polkadot-api">Configuring Polkadot API</a></h2>
+<p>Polkadot API comes with a handy bundle of chainspecs for both <a href="https://github.com/polkadot-api/polkadot-api/tree/main/packages/known-chains"><code>well-known-chains</code> and <code>system-chains</code></a> to make your life easier.</p>
+<p>This means you don’t have to worry about finding endpoints for fetching metadata or chainspecs (which are needed for the light client). All of this is bundled right into PAPI.</p>
+<p>As we move forward, you’ll see just how helpful this can be in simplifying the setup process.</p>
+<h3 id="adding-polkadot-chain"><a class="header" href="#adding-polkadot-chain">Adding polkadot chain</a></h3>
+<p>Lets get going with this and run:</p>
+<pre><code class="language-shell">$ bunx papi add dot -n polkadot
+</code></pre>
+<blockquote>
+<p>Note: bunx is the equivelent package runner for bun (as npx is for npm).
+You can read <a href="https://bun.sh/docs/cli/bunx">more here</a>.</p>
+</blockquote>
+<p>What happened here?
+Using <code>bunx</code> we asked (politely) from Polkadot API to fetch for you, in a <code>dot</code> "variable", the metadata from (the well-known-chain) <code>polkadot</code>.</p>
+<p>The outcome of the command should be the following:</p>
+<pre><code class="language-shell">$ bunx papi add dot -n polkadot
+
+✔ Metadata saved as .papi/metadata/dot.scale
+Saved new spec "dot"
+Reading metadata
+CLI Building entry: .papi/descriptors/src/index.ts
+CLI Using tsconfig: tsconfig.json
+CLI tsup v8.3.0
+CLI Target: esnext
+CJS Build start
+ESM Build start
+ESM .papi/descriptors/dist/index.mjs                  9.88 KB
+ESM .papi/descriptors/dist/metadataTypes-FYTIEX4M.mjs 146.06 KB
+ESM .papi/descriptors/dist/descriptors-BGFWDDEF.mjs   25.73 KB
+ESM ⚡️ Build success in 20ms
+CJS .papi/descriptors/dist/index.js 190.36 KB
+CJS ⚡️ Build success in 20ms
+Compilation started
+Compilation successful
+bun install
+bun install v1.1.7 (b0b7db5c)
+
+ + @polkadot-api/descriptors@.papi/descriptors
+
+ 1 package installed [19.00ms]
+</code></pre>
+<p>So what PAPI did for you, behind the scenes?</p>
+<ol>
+<li>Created a directory called <code>.papi</code> and under it in the dir <code>metadata</code> saved all the latest metadata for <code>polkadot</code>;</li>
+<li>In your <code>package.json</code> file added a dependency link to the descriptors that are created: <code>"@polkadot-api/descriptors": "file:.papi/descriptors",</code>.</li>
+<li>Under the <code>.papi</code> directory, created a PAPI configuration file called <code>polkadot-api.json</code> that looks like this:</li>
+</ol>
+<pre><code>{
+ "version": 0,
+ "descriptorPath": ".papi/descriptors",
+ "entries": {
+   "dot": {
+     "chain": "polkadot",
+     "metadata": ".papi/metadata/dot.scale"
+   }
+ }
+}
+</code></pre>
+<p>and contains in <code>entries</code> the "variable" <code>dot</code>, linked to the respective chain and metadata;</p>
+<blockquote>
+<p>Note: the command <code>bunx papi add dot -n polkadot</code> is same if we used an rpc endpoint with the flag -w, meaning:</p>
+<p><code>$ bunx papi add -w wss://polkadot-collectives-rpc.polkadot.io dot</code></p>
+<p>but since <code>polkadot</code> is a known chain, the first command will suffice</p>
+</blockquote>
+<p>In just few words - configured all the paths and needed dependencies with just 1 command.</p>
+<h3 id="adding-people-and-collectives-parachains"><a class="header" href="#adding-people-and-collectives-parachains">Adding people and collectives parachains</a></h3>
+<p>Lets run the commands for the rest of the chains we need:</p>
+<pre><code class="language-shell">$ bunx papi add people -n polkadot_people
+</code></pre>
+<p>and</p>
+<pre><code class="language-shell">$ bunx papi add collectives -n polkadot_collectives
+</code></pre>
+<h3 id="configuration-complete"><a class="header" href="#configuration-complete">Configuration Complete</a></h3>
+<p>Configuration is now finished! All the necessary chains are set up in your project, and the metadata is neatly organized in a structured directory.</p>
+<blockquote>
+<p>Note: It’s a great idea to add PAPI to the "postinstall" script in your package.json to automate the generation of types after installation. (see <code>package.json</code> file for how that looks.)</p>
+</blockquote>
+</div>
+<div class="content-col">
+<div class="tab">
+  <button class="maintab tablinks active" onclick="switchMainTab(event, 'Source')">Source</button>
+  <button class="maintab tablinks" onclick="switchMainTab(event, 'Diff')">Diff</button>
+</div>
+<div id="Source" class="maintab tabcontent active">
+<div class="tab">
+<button class="subtab tablinks file-source file-modified active" onclick="switchSubTab(event, 'bun.lockb')" data-id="bun.lockb">bun.lockb</button>
+<button class="subtab tablinks file-source file-modified" onclick="switchSubTab(event, 'package.json')" data-id="package.json">package.json</button>
+</div>
+<div id="source/bun.lockb" class="subtab tabcontent active" data-id="bun.lockb">
+<pre><code class="language-text">{{#include ./source/bun.lockb}}
+</code></pre>
+</div>
+<div id="source/package.json" class="subtab tabcontent" data-id="package.json">
+<pre><code class="language-json">{
+  "name": "papi-intro-tutorial",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "postinstall": "papi"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@polkadot-api/descriptors": "file:.papi/descriptors",
+    "polkadot-api": "^1.3.2"
+  }
+}
+</code></pre>
+</div>
+</div>
+<div id="Diff" class="maintab tabcontent">
+<div class="tab">
+	<button class="difftab tablinks active" onclick="switchDiff(event, 'changes.diff')" data-id="changes.diff">changes.diff</button>
+</div>
+<div id="changes.diff" class="difftab tabcontent active" data-id="changes.diff">
+<pre><code class="language-diff">diff --git a/.papi/descriptors/.gitignore b/.papi/descriptors/.gitignore
+new file mode 100644
+index 0000000..46d96ea
+--- /dev/null
++++ b/.papi/descriptors/.gitignore
+@@ -0,0 +1,3 @@
++*
++!.gitignore
++!package.json
+\ No newline at end of file
+diff --git a/.papi/descriptors/package.json b/.papi/descriptors/package.json
+new file mode 100644
+index 0000000..84c24fc
+--- /dev/null
++++ b/.papi/descriptors/package.json
+@@ -0,0 +1,24 @@
++{
++  "version": "0.1.0-autogenerated.12568091635523490236",
++  "name": "@polkadot-api/descriptors",
++  "files": [
++    "dist"
++  ],
++  "exports": {
++    ".": {
++      "types": "./dist/index.d.ts",
++      "module": "./dist/index.mjs",
++      "import": "./dist/index.mjs",
++      "require": "./dist/index.js"
++    },
++    "./package.json": "./package.json"
++  },
++  "main": "./dist/index.js",
++  "module": "./dist/index.mjs",
++  "browser": "./dist/index.mjs",
++  "types": "./dist/index.d.ts",
++  "sideEffects": false,
++  "peerDependencies": {
++    "polkadot-api": "*"
++  }
++}
+diff --git a/.papi/metadata/dot.scale b/.papi/metadata/dot.scale
+new file mode 100644
+index 0000000..9ddad64
+Binary files /dev/null and b/.papi/metadata/dot.scale differ
+diff --git a/.papi/metadata/people.scale b/.papi/metadata/people.scale
+new file mode 100644
+index 0000000..7dd1ad1
+Binary files /dev/null and b/.papi/metadata/people.scale differ
+diff --git a/.papi/polkadot-api.json b/.papi/polkadot-api.json
+new file mode 100644
+index 0000000..813e5e2
+--- /dev/null
++++ b/.papi/polkadot-api.json
+@@ -0,0 +1,14 @@
++{
++  "version": 0,
++  "descriptorPath": ".papi/descriptors",
++  "entries": {
++    "dot": {
++      "chain": "polkadot",
++      "metadata": ".papi/metadata/dot.scale"
++    },
++    "people": {
++      "chain": "polkadot_people",
++      "metadata": ".papi/metadata/people.scale"
++    }
++  }
++}
+\ No newline at end of file
+diff --git a/bun.lockb b/bun.lockb
+index 72f1cec..42ec40a 100755
+Binary files a/bun.lockb and b/bun.lockb differ
+diff --git a/package.json b/package.json
+index 22880ef..174c49d 100644
+--- a/package.json
++++ b/package.json
+@@ -2,10 +2,17 @@
+   "name": "papi-intro-tutorial",
+   "module": "index.ts",
+   "type": "module",
++  "scripts": {
++    "postinstall": "papi"
++  },
+   "devDependencies": {
+     "@types/bun": "latest"
+   },
+   "peerDependencies": {
+     "typescript": "^5.0.0"
++  },
++  "dependencies": {
++    "@polkadot-api/descriptors": "file:.papi/descriptors",
++    "polkadot-api": "^1.3.2"
+   }
+ }
+\ No newline at end of file
+</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div style="break-before: page; page-break-before: always;"></div><div class="content-row">
+<div class="content-col">
+<h1 id="todo"><a class="header" href="#todo">TODO</a></h1>
+<ul>
+<li>explain the connection process
+<ul>
+<li>explain <code>getWsProvider</code></li>
+<li>explain <code>createClient</code> and the <code>PolkadotClient</code> type</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="content-col">
+<div class="tab">
+  <button class="maintab tablinks active" onclick="switchMainTab(event, 'Template')">Template</button>
+  <button class="maintab tablinks" onclick="switchMainTab(event, 'Solution')">Solution</button>
+  <button class="maintab tablinks" onclick="switchMainTab(event, 'Diff')">Diff</button>
+</div>
+<div id="Template" class="maintab tabcontent active">
+<div class="tab">
+<button class="subtab tablinks file-template file-modified active" onclick="switchSubTab(event, 'index.ts')" data-id="index.ts">index.ts</button>
+</div>
+<div id="template/index.ts" class="subtab tabcontent active" data-id="index.ts">
+<pre><code class="language-ts">// TODO:
+// - Import `getWsProvider` from `polkadot-api/ws-provider/web`.
+// - import `createClient` and `type PolkadotClient` from `polkadot-api`;
+
+// TODO:
+// - Create a new function `makeClient`
+//   - Function accepts a parameter `endpoint` with type `string`.
+//   - Function returns the `PolkadotClient` type we imported above.
+// - Write the logic for `makeClient`
+//   - `console.log` a friendly message about which `endpoint` you are connecting to.
+//   - Call `getWsProvider(endpoint)`, and assign the result to a new `const provider`.
+//   - Call `createClient(provider)`, and assign the result to a new `const client`.
+//   - Return `client`.
+</code></pre>
+</div>
+</div>
+<div id="Solution" class="maintab tabcontent">
+<div class="tab">
+<button class="subtab tablinks file-solution file-modified active" onclick="switchSubTab(event, 'index.ts')" data-id="index.ts">index.ts</button>
+</div>
+<div id="solution/index.ts" class="subtab tabcontent active" data-id="index.ts">
+<pre><code class="language-ts">import { getWsProvider } from "polkadot-api/ws-provider/web";
+import { createClient, type PolkadotClient } from "polkadot-api";
+
+function makeClient(endpoint: string): PolkadotClient {
+	console.log(`Connecting to endpoint: ${endpoint}`);
+	const provider = getWsProvider(endpoint);
+	const client = createClient(provider);
+	return client;
+}
+</code></pre>
+</div>
+</div>
+<div id="Diff" class="maintab tabcontent">
+<div class="tab">
+	<button class="difftab tablinks active" onclick="switchDiff(event, 'template.diff')" data-id="template.diff">template.diff</button>
+	<button class="difftab tablinks" onclick="switchDiff(event, 'solution.diff')" data-id="solution.diff">solution.diff</button>
+</div>
+<div id="template.diff" class="difftab tabcontent active" data-id="template.diff">
+<pre><code class="language-diff">diff --git a/index.ts b/index.ts
+index 2a5e4b8..c55af32 100644
+--- a/index.ts
++++ b/index.ts
+@@ -1 +1,13 @@
+-console.log("Hello via Bun!");
++// TODO:
++// - Import `getWsProvider` from `polkadot-api/ws-provider/web`.
++// - import `createClient` and `type PolkadotClient` from `polkadot-api`;
++
++// TODO:
++// - Create a new function `makeClient`
++//   - Function accepts a parameter `endpoint` with type `string`.
++//   - Function returns the `PolkadotClient` type we imported above.
++// - Write the logic for `makeClient`
++//   - `console.log` a friendly message about which `endpoint` you are connecting to.
++//   - Call `getWsProvider(endpoint)`, and assign the result to a new `const provider`.
++//   - Call `createClient(provider)`, and assign the result to a new `const client`.
++//   - Return `client`.
+</code></pre>
+</div>
+<div id="solution.diff" class="difftab tabcontent" data-id="solution.diff">
+<pre><code class="language-diff">diff --git a/index.ts b/index.ts
+index c55af32..e8e78aa 100644
+--- a/index.ts
++++ b/index.ts
+@@ -1,13 +1,9 @@
+-// TODO:
+-// - Import `getWsProvider` from `polkadot-api/ws-provider/web`.
+-// - import `createClient` and `type PolkadotClient` from `polkadot-api`;
++import { getWsProvider } from "polkadot-api/ws-provider/web";
++import { createClient, type PolkadotClient } from "polkadot-api";
+ 
+-// TODO:
+-// - Create a new function `makeClient`
+-//   - Function accepts a parameter `endpoint` with type `string`.
+-//   - Function returns the `PolkadotClient` type we imported above.
+-// - Write the logic for `makeClient`
+-//   - `console.log` a friendly message about which `endpoint` you are connecting to.
+-//   - Call `getWsProvider(endpoint)`, and assign the result to a new `const provider`.
+-//   - Call `createClient(provider)`, and assign the result to a new `const client`.
+-//   - Return `client`.
++function makeClient(endpoint: string): PolkadotClient {
++	console.log(`Connecting to endpoint: ${endpoint}`);
++	const provider = getWsProvider(endpoint);
++	const client = createClient(provider);
++	return client;
++}
+</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div style="break-before: page; page-break-before: always;"></div><div class="content-row">
+<div class="content-col">
+<h1 id="todo-1"><a class="header" href="#todo-1">TODO</a></h1>
+<ul>
+<li>Explain RPC endpoints</li>
+<li>Perhaps hint at light clients</li>
+<li>Perhaps touch on async functions, even though we dont use async yet.</li>
+<li>Note in the output of <code>console.log({ polkadotClient })</code>:
+<ul>
+<li>The <code>getChainSpecData</code> method</li>
+<li>The <code>getFinalizedBlock</code> method</li>
+<li>These will be used in the next step</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="content-col">
+<div class="tab">
+  <button class="maintab tablinks active" onclick="switchMainTab(event, 'Template')">Template</button>
+  <button class="maintab tablinks" onclick="switchMainTab(event, 'Solution')">Solution</button>
+  <button class="maintab tablinks" onclick="switchMainTab(event, 'Diff')">Diff</button>
+</div>
+<div id="Template" class="maintab tabcontent active">
+<div class="tab">
+<button class="subtab tablinks file-template file-modified active" onclick="switchSubTab(event, 'index.ts')" data-id="index.ts">index.ts</button>
+</div>
+<div id="template/index.ts" class="subtab tabcontent active" data-id="index.ts">
+<pre><code class="language-ts">// TODO: Import `process` from `node:process`.
+import { getWsProvider } from "polkadot-api/ws-provider/web";
+import { createClient, type PolkadotClient } from "polkadot-api";
+
+function makeClient(endpoint: string): PolkadotClient {
+	console.log(`Connecting to endpoint: ${endpoint}`);
+	const provider = getWsProvider(endpoint);
+	const client = createClient(provider);
+	return client;
+}
+
+// TODO:
+// - Create a new `async` function called `main`.
+//   - Call `makeClient` with the endpoint `"wss://rpc.polkadot.io"`.
+//   - Assign the result to a new constant `polkadotClient`.
+//   - Print the `polkadotClient` object with `console.log` to take a peek inside.
+//   - Use `console.log` to print a "Done!" message to show you app completed successfully.
+//   - Exit the process by calling `process.exit(0)`.
+
+// TODO: Call your `main()` function.
+</code></pre>
+</div>
+</div>
+<div id="Solution" class="maintab tabcontent">
+<div class="tab">
+<button class="subtab tablinks file-solution file-modified active" onclick="switchSubTab(event, 'index.ts')" data-id="index.ts">index.ts</button>
+</div>
+<div id="solution/index.ts" class="subtab tabcontent active" data-id="index.ts">
+<pre><code class="language-ts">import process from 'node:process';
+import { getWsProvider } from "polkadot-api/ws-provider/web";
+import { createClient, type PolkadotClient } from "polkadot-api";
+
+function makeClient(endpoint: string): PolkadotClient {
+	console.log(`Connecting to endpoint: ${endpoint}`);
+	const provider = getWsProvider(endpoint);
+	const client = createClient(provider);
+	return client;
+}
+
+async function main() {
+	const polkadotClient = makeClient("wss://rpc.polkadot.io");
+	console.log({ polkadotClient });
+
+	console.log(`Done!`);
+	process.exit(0);
+}
+
+main()
+</code></pre>
+</div>
+</div>
+<div id="Diff" class="maintab tabcontent">
+<div class="tab">
+	<button class="difftab tablinks active" onclick="switchDiff(event, 'template.diff')" data-id="template.diff">template.diff</button>
+	<button class="difftab tablinks" onclick="switchDiff(event, 'solution.diff')" data-id="solution.diff">solution.diff</button>
+</div>
+<div id="template.diff" class="difftab tabcontent active" data-id="template.diff">
+<pre><code class="language-diff">diff --git a/index.ts b/index.ts
+index e8e78aa..31c77fe 100644
+--- a/index.ts
++++ b/index.ts
+@@ -1,3 +1,4 @@
++// TODO: Import `process` from `node:process`.
+ import { getWsProvider } from "polkadot-api/ws-provider/web";
+ import { createClient, type PolkadotClient } from "polkadot-api";
+ 
+@@ -7,3 +8,13 @@ function makeClient(endpoint: string): PolkadotClient {
+ 	const client = createClient(provider);
+ 	return client;
+ }
++
++// TODO:
++// - Create a new `async` function called `main`.
++//   - Call `makeClient` with the endpoint `"wss://rpc.polkadot.io"`.
++//   - Assign the result to a new constant `polkadotClient`.
++//   - Print the `polkadotClient` object with `console.log` to take a peek inside.
++//   - Use `console.log` to print a "Done!" message to show you app completed successfully.
++//   - Exit the process by calling `process.exit(0)`.
++
++// TODO: Call your `main()` function.
+</code></pre>
+</div>
+<div id="solution.diff" class="difftab tabcontent" data-id="solution.diff">
+<pre><code class="language-diff">diff --git a/index.ts b/index.ts
+index 31c77fe..5c3dccf 100644
+--- a/index.ts
++++ b/index.ts
+@@ -1,4 +1,4 @@
+-// TODO: Import `process` from `node:process`.
++import process from 'node:process';
+ import { getWsProvider } from "polkadot-api/ws-provider/web";
+ import { createClient, type PolkadotClient } from "polkadot-api";
+ 
+@@ -9,12 +9,12 @@ function makeClient(endpoint: string): PolkadotClient {
+ 	return client;
+ }
+ 
+-// TODO:
+-// - Create a new `async` function called `main`.
+-//   - Call `makeClient` with the endpoint `"wss://rpc.polkadot.io"`.
+-//   - Assign the result to a new constant `polkadotClient`.
+-//   - Print the `polkadotClient` object with `console.log` to take a peek inside.
+-//   - Use `console.log` to print a "Done!" message to show you app completed successfully.
+-//   - Exit the process by calling `process.exit(0)`.
++async function main() {
++	const polkadotClient = makeClient("wss://rpc.polkadot.io");
++	console.log({ polkadotClient });
+ 
+-// TODO: Call your `main()` function.
++	console.log(`Done!`);
++	process.exit(0);
++}
++
++main()
+</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div style="break-before: page; page-break-before: always;"></div><div class="content-row">
+<div class="content-col">
+<h1 id="solution"><a class="header" href="#solution">Solution</a></h1>
+<p>You can find the solution to the previous step here.</p>
+<!-- Generally, this page is not shown to the user. -->
+</div>
+<div class="content-col">
+<div class="tab">
+  <button class="maintab tablinks active" onclick="switchMainTab(event, 'Template')">Template</button>
+  <button class="maintab tablinks" onclick="switchMainTab(event, 'Solution')">Solution</button>
+  <button class="maintab tablinks" onclick="switchMainTab(event, 'Diff')">Diff</button>
+</div>
+<div id="Template" class="maintab tabcontent active">
+<div class="tab">
+<button class="subtab tablinks file-template file-modified active" onclick="switchSubTab(event, 'index.ts')" data-id="index.ts">index.ts</button>
+</div>
+<div id="template/index.ts" class="subtab tabcontent active" data-id="index.ts">
+<pre><code class="language-ts">import process from 'node:process';
+import { getWsProvider } from "polkadot-api/ws-provider/web";
+import { createClient, type PolkadotClient } from "polkadot-api";
+
+function makeClient(endpoint: string): PolkadotClient {
+	console.log(`Connecting to endpoint: ${endpoint}`);
+	const provider = getWsProvider(endpoint);
+	const client = createClient(provider);
+	return client;
+}
+
+// TODO:
+// - Create a new `async` function` named `printChainInfo`.
+//   - It should accept a parameter `client` of type `PolkadotClient`.
+// - Write the logic for `printChainInfo`.
+//   - Call the `getChainSpecData` method, which is exposed on `client`.
+//   - `await` the result, and assign the output to a new constant `chainSpec`.
+//   - Call the `getFinalizedBlock` method, which is exposed on `client`.
+//   - `await` the result, and assign the output to a new constant `finalizedBlock`.
+//   - Print `chainSpec.name` and `finalizedBlock.number` with a friendly message.
+
+async function main() {
+	const polkadotClient = makeClient("wss://rpc.polkadot.io");
+	// TODO: Replace this line with `await printChainInfo({ polkadotClient });`
+	console.log({ polkadotClient });
+
+	console.log(`Done!`);
+	process.exit(0);
+}
+
+main()
+</code></pre>
+</div>
+</div>
+<div id="Solution" class="maintab tabcontent">
+<div class="tab">
+<button class="subtab tablinks file-solution file-modified active" onclick="switchSubTab(event, 'index.ts')" data-id="index.ts">index.ts</button>
+</div>
+<div id="solution/index.ts" class="subtab tabcontent active" data-id="index.ts">
+<pre><code class="language-ts">import process from 'node:process';
+import { getWsProvider } from "polkadot-api/ws-provider/web";
+import { createClient, type PolkadotClient } from "polkadot-api";
+
+function makeClient(endpoint: string): PolkadotClient {
+	console.log(`Connecting to endpoint: ${endpoint}`);
+	const provider = getWsProvider(endpoint);
+	const client = createClient(provider);
+	return client;
+}
+
+async function printChainInfo(client: PolkadotClient) {
+	let chain = await client.getChainSpecData()
+	let finalizedBlock = await client.getFinalizedBlock();
+	console.log(`Connected to ${chain.name} at block ${finalizedBlock.number}.\n`);
+}
+
+async function main() {
+	const polkadotClient = makeClient("wss://rpc.polkadot.io");
+	await printChainInfo(polkadotClient);
+
+	console.log(`Done!`);
+	process.exit(0);
+}
+
+main()
+</code></pre>
+</div>
+</div>
+<div id="Diff" class="maintab tabcontent">
+<div class="tab">
+	<button class="difftab tablinks active" onclick="switchDiff(event, 'template.diff')" data-id="template.diff">template.diff</button>
+	<button class="difftab tablinks" onclick="switchDiff(event, 'solution.diff')" data-id="solution.diff">solution.diff</button>
+</div>
+<div id="template.diff" class="difftab tabcontent active" data-id="template.diff">
+<pre><code class="language-diff">diff --git a/index.ts b/index.ts
+index 5c3dccf..59b8b45 100644
+--- a/index.ts
++++ b/index.ts
+@@ -9,8 +9,19 @@ function makeClient(endpoint: string): PolkadotClient {
+ 	return client;
+ }
+ 
++// TODO:
++// - Create a new `async` function` named `printChainInfo`.
++//   - It should accept a parameter `client` of type `PolkadotClient`.
++// - Write the logic for `printChainInfo`.
++//   - Call the `getChainSpecData` method, which is exposed on `client`.
++//   - `await` the result, and assign the output to a new constant `chainSpec`.
++//   - Call the `getFinalizedBlock` method, which is exposed on `client`.
++//   - `await` the result, and assign the output to a new constant `finalizedBlock`.
++//   - Print `chainSpec.name` and `finalizedBlock.number` with a friendly message.
++
+ async function main() {
+ 	const polkadotClient = makeClient("wss://rpc.polkadot.io");
++	// TODO: Replace this line with `await printChainInfo({ polkadotClient });`
+ 	console.log({ polkadotClient });
+ 
+ 	console.log(`Done!`);
+</code></pre>
+</div>
+<div id="solution.diff" class="difftab tabcontent" data-id="solution.diff">
+<pre><code class="language-diff">diff --git a/index.ts b/index.ts
+index 59b8b45..a6c9d39 100644
+--- a/index.ts
++++ b/index.ts
+@@ -9,20 +9,15 @@ function makeClient(endpoint: string): PolkadotClient {
+ 	return client;
+ }
+ 
+-// TODO:
+-// - Create a new `async` function` named `printChainInfo`.
+-//   - It should accept a parameter `client` of type `PolkadotClient`.
+-// - Write the logic for `printChainInfo`.
+-//   - Call the `getChainSpecData` method, which is exposed on `client`.
+-//   - `await` the result, and assign the output to a new constant `chainSpec`.
+-//   - Call the `getFinalizedBlock` method, which is exposed on `client`.
+-//   - `await` the result, and assign the output to a new constant `finalizedBlock`.
+-//   - Print `chainSpec.name` and `finalizedBlock.number` with a friendly message.
++async function printChainInfo(client: PolkadotClient) {
++	let chain = await client.getChainSpecData()
++	let finalizedBlock = await client.getFinalizedBlock();
++	console.log(`Connected to ${chain.name} at block ${finalizedBlock.number}.\n`);
++}
+ 
+ async function main() {
+ 	const polkadotClient = makeClient("wss://rpc.polkadot.io");
+-	// TODO: Replace this line with `await printChainInfo({ polkadotClient });`
+-	console.log({ polkadotClient });
++	await printChainInfo(polkadotClient);
+ 
+ 	console.log(`Done!`);
+ 	process.exit(0);
+</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div style="break-before: page; page-break-before: always;"></div><div class="content-row">
+<div class="content-col">
+<h1 id="todo-2"><a class="header" href="#todo-2">TODO</a></h1>
+<ul>
+<li>
+<p><code>@polkadot-api/descriptors</code></p>
+</li>
+<li>
+<p><code>getTypedApi</code></p>
+</li>
+<li>
+<p><code>dotApi.query</code></p>
+</li>
+<li>
+<p><code>System.Account</code></p>
+</li>
+<li>
+<p><code>getValue</code></p>
+</li>
+<li>
+<p>Explain <code>total_balance = free + reserved</code></p>
+</li>
+</ul>
+</div>
+<div class="content-col">
+<div class="tab">
+  <button class="maintab tablinks active" onclick="switchMainTab(event, 'Template')">Template</button>
+  <button class="maintab tablinks" onclick="switchMainTab(event, 'Solution')">Solution</button>
+  <button class="maintab tablinks" onclick="switchMainTab(event, 'Diff')">Diff</button>
+</div>
+<div id="Template" class="maintab tabcontent active">
+<div class="tab">
+<button class="subtab tablinks file-template file-modified active" onclick="switchSubTab(event, 'index.ts')" data-id="index.ts">index.ts</button>
+</div>
+<div id="template/index.ts" class="subtab tabcontent active" data-id="index.ts">
+<pre><code class="language-ts">import process from 'node:process';
+import { getWsProvider } from "polkadot-api/ws-provider/web";
+// TODO: Import the type `SS58String` from `"polkadot-api"`.
+import { createClient, type PolkadotClient } from "polkadot-api";
+// TODO: Import `dot` from `"@polkadot-api/descriptors"`.
+
+function makeClient(endpoint: string): PolkadotClient {
+	console.log(`Connecting to endpoint: ${endpoint}`);
+	const provider = getWsProvider(endpoint);
+	const client = createClient(provider);
+	return client;
+}
+
+async function printChainInfo(client: PolkadotClient) {
+	const chain = await client.getChainSpecData()
+	const finalizedBlock = await client.getFinalizedBlock();
+	console.log(`Connected to ${chain.name} at block ${finalizedBlock.number}.\n`);
+}
+
+// TODO:
+// - Create a new `async` function called `getBalance`:
+//   - It accepts two parameters:
+//     - A parameter named `polkadotClient` which is of type `PolkadotClient`.
+//     - A parameter named `address` which is of type `SS58String` which we imported above.
+//   - It returns a `Promise&lt;BigInt&gt;`.
+// - Write the logic of the `getBalance` function:
+//   - Call the `getTypedApi` method on the `polkadotClient` variable.
+//     - The `getTypedApi` method should include the parameter `dot`, which we imported above.
+//     - Assign the result to a new constant `dotApi`.
+//   - Call `dotApi.query.System.Account.getValue(address)`.
+//   - `await` the result, and assign it to a new constant `accountInfo`.
+//   - Extract the `free` and `reserved` balance from `accountInfo.data`.
+//   - Return the sum of `free` and `reserved`.
+
+async function main() {
+	const polkadotClient = makeClient("wss://rpc.polkadot.io");
+	await printChainInfo(polkadotClient);
+
+	// TODO:
+	// - Create a new constant `address` with value `"15DCZocYEM2ThYCAj22QE4QENRvUNVrDtoLBVbCm5x4EQncr"`.
+	// - Call `getBalance`, using the constants `polkadotClient` and `address`.
+	// - `await` the result, and assign it to a constant named `balance`.
+	// - Print a friendly message to display the `address` and their `balance`.
+
+	console.log(`Done!`);
+	process.exit(0);
+}
+
+main()
+</code></pre>
+</div>
+</div>
+<div id="Solution" class="maintab tabcontent">
+<div class="tab">
+<button class="subtab tablinks file-solution file-modified active" onclick="switchSubTab(event, 'index.ts')" data-id="index.ts">index.ts</button>
+</div>
+<div id="solution/index.ts" class="subtab tabcontent active" data-id="index.ts">
+<pre><code class="language-ts">import process from 'node:process';
+import { getWsProvider } from "polkadot-api/ws-provider/web";
+import { createClient, type PolkadotClient, type SS58String } from "polkadot-api";
+import { dot } from "@polkadot-api/descriptors";
+
+function makeClient(endpoint: string): PolkadotClient {
+	console.log(`Connecting to endpoint: ${endpoint}`);
+	const provider = getWsProvider(endpoint);
+	const client = createClient(provider);
+	return client;
+}
+
+async function printChainInfo(client: PolkadotClient) {
+	const chain = await client.getChainSpecData()
+	const finalizedBlock = await client.getFinalizedBlock();
+	console.log(`Connected to ${chain.name} at block ${finalizedBlock.number}.\n`);
+}
+
+async function getBalance(polkadotClient: PolkadotClient, address: SS58String): Promise&lt;BigInt&gt; {
+	const dotApi = polkadotClient.getTypedApi(dot);
+	const accountInfo = await dotApi.query.System.Account.getValue(address);
+	const { free, reserved } = accountInfo.data;
+	return free + reserved;
+}
+
+async function main() {
+	const polkadotClient = makeClient("wss://rpc.polkadot.io");
+	await printChainInfo(polkadotClient);
+
+	const address = "15DCZocYEM2ThYCAj22QE4QENRvUNVrDtoLBVbCm5x4EQncr"
+	const balance = await getBalance(polkadotClient, address);
+	console.log(`Balance of ${address} is ${balance}.`);
+
+	console.log(`Done!`);
+	process.exit(0);
+}
+
+main()
+</code></pre>
+</div>
+</div>
+<div id="Diff" class="maintab tabcontent">
+<div class="tab">
+	<button class="difftab tablinks active" onclick="switchDiff(event, 'template.diff')" data-id="template.diff">template.diff</button>
+	<button class="difftab tablinks" onclick="switchDiff(event, 'solution.diff')" data-id="solution.diff">solution.diff</button>
+</div>
+<div id="template.diff" class="difftab tabcontent active" data-id="template.diff">
+<pre><code class="language-diff">diff --git a/index.ts b/index.ts
+index a6c9d39..af92fee 100644
+--- a/index.ts
++++ b/index.ts
+@@ -1,6 +1,8 @@
+ import process from 'node:process';
+ import { getWsProvider } from "polkadot-api/ws-provider/web";
++// TODO: Import the type `SS58String` from `"polkadot-api"`.
+ import { createClient, type PolkadotClient } from "polkadot-api";
++// TODO: Import `dot` from `"@polkadot-api/descriptors"`.
+ 
+ function makeClient(endpoint: string): PolkadotClient {
+ 	console.log(`Connecting to endpoint: ${endpoint}`);
+@@ -10,15 +12,36 @@ function makeClient(endpoint: string): PolkadotClient {
+ }
+ 
+ async function printChainInfo(client: PolkadotClient) {
+-	let chain = await client.getChainSpecData()
+-	let finalizedBlock = await client.getFinalizedBlock();
++	const chain = await client.getChainSpecData()
++	const finalizedBlock = await client.getFinalizedBlock();
+ 	console.log(`Connected to ${chain.name} at block ${finalizedBlock.number}.\n`);
+ }
+ 
++// TODO:
++// - Create a new `async` function called `getBalance`:
++//   - It accepts two parameters:
++//     - A parameter named `polkadotClient` which is of type `PolkadotClient`.
++//     - A parameter named `address` which is of type `SS58String` which we imported above.
++//   - It returns a `Promise&lt;BigInt&gt;`.
++// - Write the logic of the `getBalance` function:
++//   - Call the `getTypedApi` method on the `polkadotClient` variable.
++//     - The `getTypedApi` method should include the parameter `dot`, which we imported above.
++//     - Assign the result to a new constant `dotApi`.
++//   - Call `dotApi.query.System.Account.getValue(address)`.
++//   - `await` the result, and assign it to a new constant `accountInfo`.
++//   - Extract the `free` and `reserved` balance from `accountInfo.data`.
++//   - Return the sum of `free` and `reserved`.
++
+ async function main() {
+ 	const polkadotClient = makeClient("wss://rpc.polkadot.io");
+ 	await printChainInfo(polkadotClient);
+ 
++	// TODO:
++	// - Create a new constant `address` with value `"15DCZocYEM2ThYCAj22QE4QENRvUNVrDtoLBVbCm5x4EQncr"`.
++	// - Call `getBalance`, using the constants `polkadotClient` and `address`.
++	// - `await` the result, and assign it to a constant named `balance`.
++	// - Print a friendly message to display the `address` and their `balance`.
++
+ 	console.log(`Done!`);
+ 	process.exit(0);
+ }
+</code></pre>
+</div>
+<div id="solution.diff" class="difftab tabcontent" data-id="solution.diff">
+<pre><code class="language-diff">diff --git a/index.ts b/index.ts
+index af92fee..87ba940 100644
+--- a/index.ts
++++ b/index.ts
+@@ -1,8 +1,7 @@
+ import process from 'node:process';
+ import { getWsProvider } from "polkadot-api/ws-provider/web";
+-// TODO: Import the type `SS58String` from `"polkadot-api"`.
+-import { createClient, type PolkadotClient } from "polkadot-api";
+-// TODO: Import `dot` from `"@polkadot-api/descriptors"`.
++import { createClient, type PolkadotClient, type SS58String } from "polkadot-api";
++import { dot } from "@polkadot-api/descriptors";
+ 
+ function makeClient(endpoint: string): PolkadotClient {
+ 	console.log(`Connecting to endpoint: ${endpoint}`);
+@@ -17,30 +16,20 @@ async function printChainInfo(client: PolkadotClient) {
+ 	console.log(`Connected to ${chain.name} at block ${finalizedBlock.number}.\n`);
+ }
+ 
+-// TODO:
+-// - Create a new `async` function called `getBalance`:
+-//   - It accepts two parameters:
+-//     - A parameter named `polkadotClient` which is of type `PolkadotClient`.
+-//     - A parameter named `address` which is of type `SS58String` which we imported above.
+-//   - It returns a `Promise&lt;BigInt&gt;`.
+-// - Write the logic of the `getBalance` function:
+-//   - Call the `getTypedApi` method on the `polkadotClient` variable.
+-//     - The `getTypedApi` method should include the parameter `dot`, which we imported above.
+-//     - Assign the result to a new constant `dotApi`.
+-//   - Call `dotApi.query.System.Account.getValue(address)`.
+-//   - `await` the result, and assign it to a new constant `accountInfo`.
+-//   - Extract the `free` and `reserved` balance from `accountInfo.data`.
+-//   - Return the sum of `free` and `reserved`.
++async function getBalance(polkadotClient: PolkadotClient, address: SS58String): Promise&lt;BigInt&gt; {
++	const dotApi = polkadotClient.getTypedApi(dot);
++	const accountInfo = await dotApi.query.System.Account.getValue(address);
++	const { free, reserved } = accountInfo.data;
++	return free + reserved;
++}
+ 
+ async function main() {
+ 	const polkadotClient = makeClient("wss://rpc.polkadot.io");
+ 	await printChainInfo(polkadotClient);
+ 
+-	// TODO:
+-	// - Create a new constant `address` with value `"15DCZocYEM2ThYCAj22QE4QENRvUNVrDtoLBVbCm5x4EQncr"`.
+-	// - Call `getBalance`, using the constants `polkadotClient` and `address`.
+-	// - `await` the result, and assign it to a constant named `balance`.
+-	// - Print a friendly message to display the `address` and their `balance`.
++	const address = "15DCZocYEM2ThYCAj22QE4QENRvUNVrDtoLBVbCm5x4EQncr"
++	const balance = await getBalance(polkadotClient, address);
++	console.log(`Balance of ${address} is ${balance}.`);
+ 
+ 	console.log(`Done!`);
+ 	process.exit(0);
+</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div style="break-before: page; page-break-before: always;"></div><div class="content-row">
+<div class="content-col">
+<h1 id="todo-3"><a class="header" href="#todo-3">TODO</a></h1>
+<ul>
+<li>describe people chain</li>
+<li>explain <code>people</code> descriptor</li>
+<li>explain <code>peopleApi.query</code></li>
+<li>Identity.IdentityOf</li>
+<li>accountInfo?.[0].info.display.value?.asText()</li>
+<li>explain possibly undefined</li>
+</ul>
+</div>
+<div class="content-col">
+<div class="tab">
+  <button class="maintab tablinks active" onclick="switchMainTab(event, 'Template')">Template</button>
+  <button class="maintab tablinks" onclick="switchMainTab(event, 'Solution')">Solution</button>
+  <button class="maintab tablinks" onclick="switchMainTab(event, 'Diff')">Diff</button>
+</div>
+<div id="Template" class="maintab tabcontent active">
+<div class="tab">
+<button class="subtab tablinks file-template file-modified active" onclick="switchSubTab(event, 'index.ts')" data-id="index.ts">index.ts</button>
+</div>
+<div id="template/index.ts" class="subtab tabcontent active" data-id="index.ts">
+<pre><code class="language-ts">import process from 'node:process';
+import { getWsProvider } from "polkadot-api/ws-provider/web";
+import { createClient, type PolkadotClient, type SS58String } from "polkadot-api";
+// TODO: Import `people` from `"@polkadot-api/descriptors"`;
+import { dot } from "@polkadot-api/descriptors";
+
+function makeClient(endpoint: string): PolkadotClient {
+	console.log(`Connecting to endpoint: ${endpoint}`);
+	const provider = getWsProvider(endpoint);
+	const client = createClient(provider);
+	return client;
+}
+
+async function printChainInfo(client: PolkadotClient) {
+	const chain = await client.getChainSpecData()
+	const finalizedBlock = await client.getFinalizedBlock();
+	console.log(`Connected to ${chain.name} at block ${finalizedBlock.number}.\n`);
+}
+
+async function getBalance(polkadotClient: PolkadotClient, address: SS58String): Promise&lt;BigInt&gt; {
+	const dotApi = polkadotClient.getTypedApi(dot);
+	const accountInfo = await dotApi.query.System.Account.getValue(address);
+	const { free, reserved } = accountInfo.data;
+	return free + reserved;
+}
+
+// TODO:
+// - Create a new `async` function called `getDisplayName`:
+//   - It accepts two parameters:
+//     - `peopleClient` which is of type `PolkadotClient`.
+//     - `address` which is of type `SS58String`.
+//   - It returns a `Promise&lt;string | undefined&gt;`.
+// - Write the logic of the `getDisplayName` function:
+//   - Call the `getTypedApi` method on the `peopleClient` variable.
+//     - The `getTypedApi` method should include the parameter `people`, which we imported above.
+//     - Assign the result to a new constant `peopleApi`.
+//   - Call `peopleApi.query.Identity.IdentityOf.getValue(address)`.
+//   - `await` the result, and assign it to a new constant `accountInfo`.
+//   - Extract the display name with: `accountInfo?.[0].info.display.value?.asText()`
+//     - Assign the result to a new constant `displayName`.
+//   - Return the `displayName` constant.
+
+async function main() {
+	const polkadotClient = makeClient("wss://rpc.polkadot.io");
+	await printChainInfo(polkadotClient);
+
+	const peopleClient = makeClient("wss://polkadot-people-rpc.polkadot.io");
+	await printChainInfo(peopleClient);
+
+	const address = "15DCZocYEM2ThYCAj22QE4QENRvUNVrDtoLBVbCm5x4EQncr"
+	const balance = await getBalance(polkadotClient, address);
+	// TODO:
+	// - Call `getDisplayName`, using the constants `peopleClient` and `address.
+	// - `await` the result, and assign it to a constant named `display`.
+	// - Update the message below to include the display name of the user.
+	console.log(`Balance of ${address} is ${balance}.`);
+
+	console.log(`Done!`);
+	process.exit(0);
+}
+
+main()
+</code></pre>
+</div>
+</div>
+<div id="Solution" class="maintab tabcontent">
+<div class="tab">
+<button class="subtab tablinks file-solution file-modified active" onclick="switchSubTab(event, 'index.ts')" data-id="index.ts">index.ts</button>
+</div>
+<div id="solution/index.ts" class="subtab tabcontent active" data-id="index.ts">
+<pre><code class="language-ts">import process from 'node:process';
+import { getWsProvider } from "polkadot-api/ws-provider/web";
+import { createClient, type PolkadotClient, type SS58String } from "polkadot-api";
+import { dot, people } from "@polkadot-api/descriptors";
+
+function makeClient(endpoint: string): PolkadotClient {
+	console.log(`Connecting to endpoint: ${endpoint}`);
+	const provider = getWsProvider(endpoint);
+	const client = createClient(provider);
+	return client;
+}
+
+async function printChainInfo(client: PolkadotClient) {
+	const chain = await client.getChainSpecData()
+	const finalizedBlock = await client.getFinalizedBlock();
+	console.log(`Connected to ${chain.name} at block ${finalizedBlock.number}.\n`);
+}
+
+async function getBalance(polkadotClient: PolkadotClient, address: SS58String): Promise&lt;BigInt&gt; {
+	const dotApi = polkadotClient.getTypedApi(dot);
+	const accountInfo = await dotApi.query.System.Account.getValue(address);
+	const { free, reserved } = accountInfo.data;
+	return free + reserved;
+}
+
+async function getDisplayName(peopleClient: PolkadotClient, address: SS58String): Promise&lt;string | undefined&gt; {
+	const peopleApi = peopleClient.getTypedApi(people);
+	const accountInfo = await peopleApi.query.Identity.IdentityOf.getValue(address);
+	const displayName = accountInfo?.[0].info.display.value?.asText();
+	return displayName;
+}
+
+async function main() {
+	const polkadotClient = makeClient("wss://rpc.polkadot.io");
+	await printChainInfo(polkadotClient);
+
+	const peopleClient = makeClient("wss://polkadot-people-rpc.polkadot.io");
+	await printChainInfo(peopleClient);
+
+	const address = "15DCZocYEM2ThYCAj22QE4QENRvUNVrDtoLBVbCm5x4EQncr"
+	const balance = await getBalance(polkadotClient, address);
+	const displayName = await getDisplayName(peopleClient, address);
+	console.log(`Balance of ${displayName} (${address}) is ${balance}.`);
+
+	console.log(`Done!`);
+	process.exit(0);
+}
+
+main()
+</code></pre>
+</div>
+</div>
+<div id="Diff" class="maintab tabcontent">
+<div class="tab">
+	<button class="difftab tablinks active" onclick="switchDiff(event, 'template.diff')" data-id="template.diff">template.diff</button>
+	<button class="difftab tablinks" onclick="switchDiff(event, 'solution.diff')" data-id="solution.diff">solution.diff</button>
+</div>
+<div id="template.diff" class="difftab tabcontent active" data-id="template.diff">
+<pre><code class="language-diff">diff --git a/index.ts b/index.ts
+index 87ba940..5ab3fc2 100644
+--- a/index.ts
++++ b/index.ts
+@@ -1,6 +1,7 @@
+ import process from 'node:process';
+ import { getWsProvider } from "polkadot-api/ws-provider/web";
+ import { createClient, type PolkadotClient, type SS58String } from "polkadot-api";
++// TODO: Import `people` from `"@polkadot-api/descriptors"`;
+ import { dot } from "@polkadot-api/descriptors";
+ 
+ function makeClient(endpoint: string): PolkadotClient {
+@@ -23,12 +24,35 @@ async function getBalance(polkadotClient: PolkadotClient, address: SS58String):
+ 	return free + reserved;
+ }
+ 
++// TODO:
++// - Create a new `async` function called `getDisplayName`:
++//   - It accepts two parameters:
++//     - `peopleClient` which is of type `PolkadotClient`.
++//     - `address` which is of type `SS58String`.
++//   - It returns a `Promise&lt;string | undefined&gt;`.
++// - Write the logic of the `getDisplayName` function:
++//   - Call the `getTypedApi` method on the `peopleClient` variable.
++//     - The `getTypedApi` method should include the parameter `people`, which we imported above.
++//     - Assign the result to a new constant `peopleApi`.
++//   - Call `peopleApi.query.Identity.IdentityOf.getValue(address)`.
++//   - `await` the result, and assign it to a new constant `accountInfo`.
++//   - Extract the display name with: `accountInfo?.[0].info.display.value?.asText()`
++//     - Assign the result to a new constant `displayName`.
++//   - Return the `displayName` constant.
++
+ async function main() {
+ 	const polkadotClient = makeClient("wss://rpc.polkadot.io");
+ 	await printChainInfo(polkadotClient);
+ 
++	const peopleClient = makeClient("wss://polkadot-people-rpc.polkadot.io");
++	await printChainInfo(peopleClient);
++
+ 	const address = "15DCZocYEM2ThYCAj22QE4QENRvUNVrDtoLBVbCm5x4EQncr"
+ 	const balance = await getBalance(polkadotClient, address);
++	// TODO:
++	// - Call `getDisplayName`, using the constants `peopleClient` and `address.
++	// - `await` the result, and assign it to a constant named `display`.
++	// - Update the message below to include the display name of the user.
+ 	console.log(`Balance of ${address} is ${balance}.`);
+ 
+ 	console.log(`Done!`);
+</code></pre>
+</div>
+<div id="solution.diff" class="difftab tabcontent" data-id="solution.diff">
+<pre><code class="language-diff">diff --git a/index.ts b/index.ts
+index 5ab3fc2..882349c 100644
+--- a/index.ts
++++ b/index.ts
+@@ -1,8 +1,7 @@
+ import process from 'node:process';
+ import { getWsProvider } from "polkadot-api/ws-provider/web";
+ import { createClient, type PolkadotClient, type SS58String } from "polkadot-api";
+-// TODO: Import `people` from `"@polkadot-api/descriptors"`;
+-import { dot } from "@polkadot-api/descriptors";
++import { dot, people } from "@polkadot-api/descriptors";
+ 
+ function makeClient(endpoint: string): PolkadotClient {
+ 	console.log(`Connecting to endpoint: ${endpoint}`);
+@@ -24,21 +23,12 @@ async function getBalance(polkadotClient: PolkadotClient, address: SS58String):
+ 	return free + reserved;
+ }
+ 
+-// TODO:
+-// - Create a new `async` function called `getDisplayName`:
+-//   - It accepts two parameters:
+-//     - `peopleClient` which is of type `PolkadotClient`.
+-//     - `address` which is of type `SS58String`.
+-//   - It returns a `Promise&lt;string | undefined&gt;`.
+-// - Write the logic of the `getDisplayName` function:
+-//   - Call the `getTypedApi` method on the `peopleClient` variable.
+-//     - The `getTypedApi` method should include the parameter `people`, which we imported above.
+-//     - Assign the result to a new constant `peopleApi`.
+-//   - Call `peopleApi.query.Identity.IdentityOf.getValue(address)`.
+-//   - `await` the result, and assign it to a new constant `accountInfo`.
+-//   - Extract the display name with: `accountInfo?.[0].info.display.value?.asText()`
+-//     - Assign the result to a new constant `displayName`.
+-//   - Return the `displayName` constant.
++async function getDisplayName(peopleClient: PolkadotClient, address: SS58String): Promise&lt;string | undefined&gt; {
++	const peopleApi = peopleClient.getTypedApi(people);
++	const accountInfo = await peopleApi.query.Identity.IdentityOf.getValue(address);
++	const displayName = accountInfo?.[0].info.display.value?.asText();
++	return displayName;
++}
+ 
+ async function main() {
+ 	const polkadotClient = makeClient("wss://rpc.polkadot.io");
+@@ -49,11 +39,8 @@ async function main() {
+ 
+ 	const address = "15DCZocYEM2ThYCAj22QE4QENRvUNVrDtoLBVbCm5x4EQncr"
+ 	const balance = await getBalance(polkadotClient, address);
+-	// TODO:
+-	// - Call `getDisplayName`, using the constants `peopleClient` and `address.
+-	// - `await` the result, and assign it to a constant named `display`.
+-	// - Update the message below to include the display name of the user.
+-	console.log(`Balance of ${address} is ${balance}.`);
++	const displayName = await getDisplayName(peopleClient, address);
++	console.log(`Balance of ${displayName} (${address}) is ${balance}.`);
+ 
+ 	console.log(`Done!`);
+ 	process.exit(0);
+</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div style="break-before: page; page-break-before: always;"></div><div class="content-row">
+<div class="content-col">
+<h1 id="todo-4"><a class="header" href="#todo-4">TODO</a></h1>
+<ul>
+<li>explain <code>collectives</code></li>
+<li>explain interface</li>
+<li>explain fellowship members, and their rank</li>
+<li>collectivesApi.query</li>
+<li>FellowshipCollective.Members</li>
+<li>getEntries()
+<ul>
+<li>listing all keys</li>
+</ul>
+</li>
+<li>explain <code>keyArgs[0]</code>
+<ul>
+<li>mapped by address</li>
+</ul>
+</li>
+<li>console.table</li>
+</ul>
+</div>
+<div class="content-col">
+<div class="tab">
+  <button class="maintab tablinks active" onclick="switchMainTab(event, 'Template')">Template</button>
+  <button class="maintab tablinks" onclick="switchMainTab(event, 'Solution')">Solution</button>
+  <button class="maintab tablinks" onclick="switchMainTab(event, 'Diff')">Diff</button>
+</div>
+<div id="Template" class="maintab tabcontent active">
+<div class="tab">
+<button class="subtab tablinks file-template file-modified active" onclick="switchSubTab(event, 'index.ts')" data-id="index.ts">index.ts</button>
+</div>
+<div id="template/index.ts" class="subtab tabcontent active" data-id="index.ts">
+<pre><code class="language-ts">import process from 'node:process';
+import { getWsProvider } from "polkadot-api/ws-provider/web";
+import { createClient, type PolkadotClient, type SS58String } from "polkadot-api";
+// TODO: Import `collectives` from `"@polkadot-api/descriptors"`.
+import { dot, people } from "@polkadot-api/descriptors";
+
+function makeClient(endpoint: string): PolkadotClient {
+	console.log(`Connecting to endpoint: ${endpoint}`);
+	const provider = getWsProvider(endpoint);
+	const client = createClient(provider);
+	return client;
+}
+
+async function printChainInfo(client: PolkadotClient) {
+	const chainSpec = await client.getChainSpecData()
+	const finalizedBlock = await client.getFinalizedBlock();
+	console.log(`Connected to ${chainSpec.name} at block ${finalizedBlock.number}.\n`);
+}
+
+async function getBalance(polkadotClient: PolkadotClient, address: SS58String): Promise&lt;BigInt&gt; {
+	const dotApi = polkadotClient.getTypedApi(dot);
+	const accountInfo = await dotApi.query.System.Account.getValue(address);
+	const { free, reserved } = accountInfo.data;
+	return free + reserved;
+}
+
+async function getDisplayName(peopleClient: PolkadotClient, address: SS58String): Promise&lt;string | undefined&gt; {
+	const peopleApi = peopleClient.getTypedApi(people);
+	const accountInfo = await peopleApi.query.Identity.IdentityOf.getValue(address);
+	const displayName = accountInfo?.[0].info.display.value?.asText();
+	return displayName;
+}
+
+// TODO:
+// - Create a new type safe `interface` called `FellowshipMember`.
+//   - It has two fields:
+//     - `address` which is of type `SS58String`.
+//     - `rank` which is of type `number`.
+
+// TODO:
+// - Create a new `async` function `getFellowshipMembers`:
+//   - It has a single parameter `collectivesClient` of type `PolkadotClient`.
+//   - It returns an array of fellowship members: `Promise&lt;FellowshipMember[]&gt;`.
+// - Write the logic of the `getFellowshipMembers` function:
+//   - Call the `getTypedApi` method on the `collectivesClient` variable.
+//     - The `getTypedApi` method should include the parameter `collectives`, which we imported above.
+//     - Assign the result to a new constant `collectivesApi`.
+//   - Call `collectivesApi.query.FellowshipCollective.Members.getEntries()`.
+//   - `await` the result, and assign it to a new constant `rawMembers`.
+//   - Extract the `address` and `rank` from `rawMembers`:
+//     - `map` the items of `rawMembers` to access the individual members `m`.
+//     - You can access the `address` of the member by calling `m.keyArgs[0]`.
+//     - You can access the `rank` of the member by calling `m.value`.
+//     - Assign the mapped data to a new constant `fellowshipMembers`.
+//       - Make sure the data is in the structure of `FellowshipMember`.
+//   - Return the `fellowshipMembers` constant.
+
+async function main() {
+	const polkadotClient = makeClient("wss://rpc.polkadot.io");
+	await printChainInfo(polkadotClient);
+
+	const peopleClient = makeClient("wss://polkadot-people-rpc.polkadot.io");
+	await printChainInfo(peopleClient);
+
+	// TODO:
+	// - Make a new client connection to `"wss://polkadot-collectives-rpc.polkadot.io"`.
+	// - Assign the result to a constant `collectivesClient`.
+	// - Call `printChainInfo(collectivesClient)` and await the result.
+
+	// TODO:
+	// - Call `getFellowshipMembers` with the parameter `collectivesClient`.
+	// - `await` the result, and assign it to a new constant `members`.
+
+	// TODO:
+	// - Create a new constant `table` which is an empty array that we will fill.
+	// - Create a `for` loop over `members`, extracting the `address` and `rank`.
+	// - Rather than use the hardcoded address below, use the `address` variable from `members`.
+	// - Bring the logic to get the `balance` and `displayName` into your loop.
+	// - Replace our `console.log`, and instead `push` all of the data into the `table` array.
+	//   - `table.push({ rank, displayName, address, balance })`
+	const address = "15DCZocYEM2ThYCAj22QE4QENRvUNVrDtoLBVbCm5x4EQncr"
+	const balance = await getBalance(polkadotClient, address);
+	const displayName = await getDisplayName(peopleClient, address);
+	console.log(`Balance of ${displayName} (${address}) is ${balance}.`);
+
+	// TODO:
+	// - We can sort the table by `rank`: `table.sort((a, b) =&gt; b.rank - a.rank)`.
+	// - Finally, print the table using `console.table(table)`, rather than `console.log`.
+
+	console.log(`Done!`);
+	process.exit(0);
+}
+
+main()
+</code></pre>
+</div>
+</div>
+<div id="Solution" class="maintab tabcontent">
+<div class="tab">
+<button class="subtab tablinks file-solution file-modified active" onclick="switchSubTab(event, 'index.ts')" data-id="index.ts">index.ts</button>
+</div>
+<div id="solution/index.ts" class="subtab tabcontent active" data-id="index.ts">
+<pre><code class="language-ts">import process from 'node:process';
+import { getWsProvider } from "polkadot-api/ws-provider/web";
+import { createClient, type PolkadotClient, type SS58String } from "polkadot-api";
+import { dot, people, collectives } from "@polkadot-api/descriptors";
+
+function makeClient(endpoint: string): PolkadotClient {
+	console.log(`Connecting to endpoint: ${endpoint}`);
+	const provider = getWsProvider(endpoint);
+	const client = createClient(provider);
+	return client;
+}
+
+async function printChainInfo(client: PolkadotClient) {
+	const chainSpec = await client.getChainSpecData()
+	const finalizedBlock = await client.getFinalizedBlock();
+	console.log(`Connected to ${chainSpec.name} at block ${finalizedBlock.number}.\n`);
+}
+
+async function getBalance(polkadotClient: PolkadotClient, address: SS58String): Promise&lt;BigInt&gt; {
+	const dotApi = polkadotClient.getTypedApi(dot);
+	const accountInfo = await dotApi.query.System.Account.getValue(address);
+	const { free, reserved } = accountInfo.data;
+	return free + reserved;
+}
+
+async function getDisplayName(peopleClient: PolkadotClient, address: SS58String): Promise&lt;string | undefined&gt; {
+	const peopleApi = peopleClient.getTypedApi(people);
+	const accountInfo = await peopleApi.query.Identity.IdentityOf.getValue(address);
+	const displayName = accountInfo?.[0].info.display.value?.asText();
+	return displayName;
+}
+
+interface FellowshipMember {
+	address: SS58String;
+	rank: number;
+}
+
+async function getFellowshipMembers(collectivesClient: PolkadotClient): Promise&lt;FellowshipMember[]&gt; {
+	const collectivesApi = collectivesClient.getTypedApi(collectives);
+	const rawMembers = await collectivesApi.query.FellowshipCollective.Members.getEntries();
+	const data = rawMembers.map((m) =&gt; { return { address: m.keyArgs[0], rank: m.value } });
+	return data;
+}
+
+async function main() {
+	const polkadotClient = makeClient("wss://rpc.polkadot.io");
+	await printChainInfo(polkadotClient);
+
+	const peopleClient = makeClient("wss://polkadot-people-rpc.polkadot.io");
+	await printChainInfo(peopleClient);
+
+	const collectivesClient = makeClient("wss://polkadot-collectives-rpc.polkadot.io");
+	await printChainInfo(collectivesClient);
+
+	const members = await getFellowshipMembers(collectivesClient);
+
+	console.log("Generating table...")
+	const table = [];
+	for (const { address, rank } of members) {
+		const balance = await getBalance(polkadotClient, address);
+		const displayName = await getDisplayName(peopleClient, address);
+		table.push({ rank, displayName, address, balance });
+	}
+
+	table.sort((a, b) =&gt; b.rank - a.rank);
+	console.table(table);
+
+	console.log(`Done!`);
+	process.exit(0);
+}
+
+main()
+</code></pre>
+</div>
+</div>
+<div id="Diff" class="maintab tabcontent">
+<div class="tab">
+	<button class="difftab tablinks active" onclick="switchDiff(event, 'template.diff')" data-id="template.diff">template.diff</button>
+	<button class="difftab tablinks" onclick="switchDiff(event, 'solution.diff')" data-id="solution.diff">solution.diff</button>
+</div>
+<div id="template.diff" class="difftab tabcontent active" data-id="template.diff">
+<pre><code class="language-diff">diff --git a/index.ts b/index.ts
+index 882349c..4f33f11 100644
+--- a/index.ts
++++ b/index.ts
+@@ -1,6 +1,7 @@
+ import process from 'node:process';
+ import { getWsProvider } from "polkadot-api/ws-provider/web";
+ import { createClient, type PolkadotClient, type SS58String } from "polkadot-api";
++// TODO: Import `collectives` from `"@polkadot-api/descriptors"`.
+ import { dot, people } from "@polkadot-api/descriptors";
+ 
+ function makeClient(endpoint: string): PolkadotClient {
+@@ -11,9 +12,9 @@ function makeClient(endpoint: string): PolkadotClient {
+ }
+ 
+ async function printChainInfo(client: PolkadotClient) {
+-	const chain = await client.getChainSpecData()
++	const chainSpec = await client.getChainSpecData()
+ 	const finalizedBlock = await client.getFinalizedBlock();
+-	console.log(`Connected to ${chain.name} at block ${finalizedBlock.number}.\n`);
++	console.log(`Connected to ${chainSpec.name} at block ${finalizedBlock.number}.\n`);
+ }
+ 
+ async function getBalance(polkadotClient: PolkadotClient, address: SS58String): Promise&lt;BigInt&gt; {
+@@ -30,6 +31,30 @@ async function getDisplayName(peopleClient: PolkadotClient, address: SS58String)
+ 	return displayName;
+ }
+ 
++// TODO:
++// - Create a new type safe `interface` called `FellowshipMember`.
++//   - It has two fields:
++//     - `address` which is of type `SS58String`.
++//     - `rank` which is of type `number`.
++
++// TODO:
++// - Create a new `async` function `getFellowshipMembers`:
++//   - It has a single parameter `collectivesClient` of type `PolkadotClient`.
++//   - It returns an array of fellowship members: `Promise&lt;FellowshipMember[]&gt;`.
++// - Write the logic of the `getFellowshipMembers` function:
++//   - Call the `getTypedApi` method on the `collectivesClient` variable.
++//     - The `getTypedApi` method should include the parameter `collectives`, which we imported above.
++//     - Assign the result to a new constant `collectivesApi`.
++//   - Call `collectivesApi.query.FellowshipCollective.Members.getEntries()`.
++//   - `await` the result, and assign it to a new constant `rawMembers`.
++//   - Extract the `address` and `rank` from `rawMembers`:
++//     - `map` the items of `rawMembers` to access the individual members `m`.
++//     - You can access the `address` of the member by calling `m.keyArgs[0]`.
++//     - You can access the `rank` of the member by calling `m.value`.
++//     - Assign the mapped data to a new constant `fellowshipMembers`.
++//       - Make sure the data is in the structure of `FellowshipMember`.
++//   - Return the `fellowshipMembers` constant.
++
+ async function main() {
+ 	const polkadotClient = makeClient("wss://rpc.polkadot.io");
+ 	await printChainInfo(polkadotClient);
+@@ -37,11 +62,31 @@ async function main() {
+ 	const peopleClient = makeClient("wss://polkadot-people-rpc.polkadot.io");
+ 	await printChainInfo(peopleClient);
+ 
++	// TODO:
++	// - Make a new client connection to `"wss://polkadot-collectives-rpc.polkadot.io"`.
++	// - Assign the result to a constant `collectivesClient`.
++	// - Call `printChainInfo(collectivesClient)` and await the result.
++
++	// TODO:
++	// - Call `getFellowshipMembers` with the parameter `collectivesClient`.
++	// - `await` the result, and assign it to a new constant `members`.
++
++	// TODO:
++	// - Create a new constant `table` which is an empty array that we will fill.
++	// - Create a `for` loop over `members`, extracting the `address` and `rank`.
++	// - Rather than use the hardcoded address below, use the `address` variable from `members`.
++	// - Bring the logic to get the `balance` and `displayName` into your loop.
++	// - Replace our `console.log`, and instead `push` all of the data into the `table` array.
++	//   - `table.push({ rank, displayName, address, balance })`
+ 	const address = "15DCZocYEM2ThYCAj22QE4QENRvUNVrDtoLBVbCm5x4EQncr"
+ 	const balance = await getBalance(polkadotClient, address);
+ 	const displayName = await getDisplayName(peopleClient, address);
+ 	console.log(`Balance of ${displayName} (${address}) is ${balance}.`);
+ 
++	// TODO:
++	// - We can sort the table by `rank`: `table.sort((a, b) =&gt; b.rank - a.rank)`.
++	// - Finally, print the table using `console.table(table)`, rather than `console.log`.
++
+ 	console.log(`Done!`);
+ 	process.exit(0);
+ }
+</code></pre>
+</div>
+<div id="solution.diff" class="difftab tabcontent" data-id="solution.diff">
+<pre><code class="language-diff">diff --git a/index.ts b/index.ts
+index 4f33f11..f067893 100644
+--- a/index.ts
++++ b/index.ts
+@@ -1,8 +1,7 @@
+ import process from 'node:process';
+ import { getWsProvider } from "polkadot-api/ws-provider/web";
+ import { createClient, type PolkadotClient, type SS58String } from "polkadot-api";
+-// TODO: Import `collectives` from `"@polkadot-api/descriptors"`.
+-import { dot, people } from "@polkadot-api/descriptors";
++import { dot, people, collectives } from "@polkadot-api/descriptors";
+ 
+ function makeClient(endpoint: string): PolkadotClient {
+ 	console.log(`Connecting to endpoint: ${endpoint}`);
+@@ -31,29 +30,17 @@ async function getDisplayName(peopleClient: PolkadotClient, address: SS58String)
+ 	return displayName;
+ }
+ 
+-// TODO:
+-// - Create a new type safe `interface` called `FellowshipMember`.
+-//   - It has two fields:
+-//     - `address` which is of type `SS58String`.
+-//     - `rank` which is of type `number`.
++interface FellowshipMember {
++	address: SS58String;
++	rank: number;
++}
+ 
+-// TODO:
+-// - Create a new `async` function `getFellowshipMembers`:
+-//   - It has a single parameter `collectivesClient` of type `PolkadotClient`.
+-//   - It returns an array of fellowship members: `Promise&lt;FellowshipMember[]&gt;`.
+-// - Write the logic of the `getFellowshipMembers` function:
+-//   - Call the `getTypedApi` method on the `collectivesClient` variable.
+-//     - The `getTypedApi` method should include the parameter `collectives`, which we imported above.
+-//     - Assign the result to a new constant `collectivesApi`.
+-//   - Call `collectivesApi.query.FellowshipCollective.Members.getEntries()`.
+-//   - `await` the result, and assign it to a new constant `rawMembers`.
+-//   - Extract the `address` and `rank` from `rawMembers`:
+-//     - `map` the items of `rawMembers` to access the individual members `m`.
+-//     - You can access the `address` of the member by calling `m.keyArgs[0]`.
+-//     - You can access the `rank` of the member by calling `m.value`.
+-//     - Assign the mapped data to a new constant `fellowshipMembers`.
+-//       - Make sure the data is in the structure of `FellowshipMember`.
+-//   - Return the `fellowshipMembers` constant.
++async function getFellowshipMembers(collectivesClient: PolkadotClient): Promise&lt;FellowshipMember[]&gt; {
++	const collectivesApi = collectivesClient.getTypedApi(collectives);
++	const rawMembers = await collectivesApi.query.FellowshipCollective.Members.getEntries();
++	const data = rawMembers.map((m) =&gt; { return { address: m.keyArgs[0], rank: m.value } });
++	return data;
++}
+ 
+ async function main() {
+ 	const polkadotClient = makeClient("wss://rpc.polkadot.io");
+@@ -62,30 +49,21 @@ async function main() {
+ 	const peopleClient = makeClient("wss://polkadot-people-rpc.polkadot.io");
+ 	await printChainInfo(peopleClient);
+ 
+-	// TODO:
+-	// - Make a new client connection to `"wss://polkadot-collectives-rpc.polkadot.io"`.
+-	// - Assign the result to a constant `collectivesClient`.
+-	// - Call `printChainInfo(collectivesClient)` and await the result.
++	const collectivesClient = makeClient("wss://polkadot-collectives-rpc.polkadot.io");
++	await printChainInfo(collectivesClient);
+ 
+-	// TODO:
+-	// - Call `getFellowshipMembers` with the parameter `collectivesClient`.
+-	// - `await` the result, and assign it to a new constant `members`.
++	const members = await getFellowshipMembers(collectivesClient);
+ 
+-	// TODO:
+-	// - Create a new constant `table` which is an empty array that we will fill.
+-	// - Create a `for` loop over `members`, extracting the `address` and `rank`.
+-	// - Rather than use the hardcoded address below, use the `address` variable from `members`.
+-	// - Bring the logic to get the `balance` and `displayName` into your loop.
+-	// - Replace our `console.log`, and instead `push` all of the data into the `table` array.
+-	//   - `table.push({ rank, displayName, address, balance })`
+-	const address = "15DCZocYEM2ThYCAj22QE4QENRvUNVrDtoLBVbCm5x4EQncr"
+-	const balance = await getBalance(polkadotClient, address);
+-	const displayName = await getDisplayName(peopleClient, address);
+-	console.log(`Balance of ${displayName} (${address}) is ${balance}.`);
++	console.log("Generating table...")
++	const table = [];
++	for (const { address, rank } of members) {
++		const balance = await getBalance(polkadotClient, address);
++		const displayName = await getDisplayName(peopleClient, address);
++		table.push({ rank, displayName, address, balance });
++	}
+ 
+-	// TODO:
+-	// - We can sort the table by `rank`: `table.sort((a, b) =&gt; b.rank - a.rank)`.
+-	// - Finally, print the table using `console.table(table)`, rather than `console.log`.
++	table.sort((a, b) =&gt; b.rank - a.rank);
++	console.table(table);
+ 
+ 	console.log(`Done!`);
+ 	process.exit(0);
+</code></pre>
+</div>
+</div>
+</div>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="custom/tabs.js"></script>
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>

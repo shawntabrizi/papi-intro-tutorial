@@ -1,0 +1,650 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>8. TODO - Gitorial mdBook Template</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom/styles.css">
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../0/index.html"><strong aria-hidden="true">1.</strong> 0. Introduction to the new Polkadot API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../1/index.html"><strong aria-hidden="true">1.1.</strong> 1. Initialize a Basic TypeScript Project</a></li><li class="chapter-item expanded "><a href="../2/index.html"><strong aria-hidden="true">1.2.</strong> 2. Lets PAPI this...!</a></li><li class="chapter-item expanded "><a href="../3/index.html"><strong aria-hidden="true">1.3.</strong> 3. TODO</a></li><li class="chapter-item expanded "><a href="../4/index.html"><strong aria-hidden="true">1.4.</strong> 4. TODO</a></li><li class="chapter-item expanded "><a href="../5/index.html"><strong aria-hidden="true">1.5.</strong> 5. Solution</a></li><li class="chapter-item expanded "><a href="../6/index.html"><strong aria-hidden="true">1.6.</strong> 6. TODO</a></li><li class="chapter-item expanded "><a href="../7/index.html"><strong aria-hidden="true">1.7.</strong> 7. TODO</a></li><li class="chapter-item expanded "><a href="../8/index.html" class="active"><strong aria-hidden="true">1.8.</strong> 8. TODO</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Gitorial mdBook Template</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/gitorial-sdk/mdbook-template" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <div class="content-row">
+<div class="content-col">
+<h1 id="todo"><a class="header" href="#todo">TODO</a></h1>
+<ul>
+<li>explain <code>collectives</code></li>
+<li>explain interface</li>
+<li>explain fellowship members, and their rank</li>
+<li>collectivesApi.query</li>
+<li>FellowshipCollective.Members</li>
+<li>getEntries()
+<ul>
+<li>listing all keys</li>
+</ul>
+</li>
+<li>explain <code>keyArgs[0]</code>
+<ul>
+<li>mapped by address</li>
+</ul>
+</li>
+<li>console.table</li>
+</ul>
+</div>
+<div class="content-col">
+<div class="tab">
+  <button class="maintab tablinks active" onclick="switchMainTab(event, 'Template')">Template</button>
+  <button class="maintab tablinks" onclick="switchMainTab(event, 'Solution')">Solution</button>
+  <button class="maintab tablinks" onclick="switchMainTab(event, 'Diff')">Diff</button>
+</div>
+<div id="Template" class="maintab tabcontent active">
+<div class="tab">
+<button class="subtab tablinks file-template file-modified active" onclick="switchSubTab(event, 'index.ts')" data-id="index.ts">index.ts</button>
+</div>
+<div id="template/index.ts" class="subtab tabcontent active" data-id="index.ts">
+<pre><code class="language-ts">import process from 'node:process';
+import { getWsProvider } from "polkadot-api/ws-provider/web";
+import { createClient, type PolkadotClient, type SS58String } from "polkadot-api";
+// TODO: Import `collectives` from `"@polkadot-api/descriptors"`.
+import { dot, people } from "@polkadot-api/descriptors";
+
+function makeClient(endpoint: string): PolkadotClient {
+	console.log(`Connecting to endpoint: ${endpoint}`);
+	const provider = getWsProvider(endpoint);
+	const client = createClient(provider);
+	return client;
+}
+
+async function printChainInfo(client: PolkadotClient) {
+	const chainSpec = await client.getChainSpecData()
+	const finalizedBlock = await client.getFinalizedBlock();
+	console.log(`Connected to ${chainSpec.name} at block ${finalizedBlock.number}.\n`);
+}
+
+async function getBalance(polkadotClient: PolkadotClient, address: SS58String): Promise&lt;BigInt&gt; {
+	const dotApi = polkadotClient.getTypedApi(dot);
+	const accountInfo = await dotApi.query.System.Account.getValue(address);
+	const { free, reserved } = accountInfo.data;
+	return free + reserved;
+}
+
+async function getDisplayName(peopleClient: PolkadotClient, address: SS58String): Promise&lt;string | undefined&gt; {
+	const peopleApi = peopleClient.getTypedApi(people);
+	const accountInfo = await peopleApi.query.Identity.IdentityOf.getValue(address);
+	const displayName = accountInfo?.[0].info.display.value?.asText();
+	return displayName;
+}
+
+// TODO:
+// - Create a new type safe `interface` called `FellowshipMember`.
+//   - It has two fields:
+//     - `address` which is of type `SS58String`.
+//     - `rank` which is of type `number`.
+
+// TODO:
+// - Create a new `async` function `getFellowshipMembers`:
+//   - It has a single parameter `collectivesClient` of type `PolkadotClient`.
+//   - It returns an array of fellowship members: `Promise&lt;FellowshipMember[]&gt;`.
+// - Write the logic of the `getFellowshipMembers` function:
+//   - Call the `getTypedApi` method on the `collectivesClient` variable.
+//     - The `getTypedApi` method should include the parameter `collectives`, which we imported above.
+//     - Assign the result to a new constant `collectivesApi`.
+//   - Call `collectivesApi.query.FellowshipCollective.Members.getEntries()`.
+//   - `await` the result, and assign it to a new constant `rawMembers`.
+//   - Extract the `address` and `rank` from `rawMembers`:
+//     - `map` the items of `rawMembers` to access the individual members `m`.
+//     - You can access the `address` of the member by calling `m.keyArgs[0]`.
+//     - You can access the `rank` of the member by calling `m.value`.
+//     - Assign the mapped data to a new constant `fellowshipMembers`.
+//       - Make sure the data is in the structure of `FellowshipMember`.
+//   - Return the `fellowshipMembers` constant.
+
+async function main() {
+	const polkadotClient = makeClient("wss://rpc.polkadot.io");
+	await printChainInfo(polkadotClient);
+
+	const peopleClient = makeClient("wss://polkadot-people-rpc.polkadot.io");
+	await printChainInfo(peopleClient);
+
+	// TODO:
+	// - Make a new client connection to `"wss://polkadot-collectives-rpc.polkadot.io"`.
+	// - Assign the result to a constant `collectivesClient`.
+	// - Call `printChainInfo(collectivesClient)` and await the result.
+
+	// TODO:
+	// - Call `getFellowshipMembers` with the parameter `collectivesClient`.
+	// - `await` the result, and assign it to a new constant `members`.
+
+	// TODO:
+	// - Create a new constant `table` which is an empty array that we will fill.
+	// - Create a `for` loop over `members`, extracting the `address` and `rank`.
+	// - Rather than use the hardcoded address below, use the `address` variable from `members`.
+	// - Bring the logic to get the `balance` and `displayName` into your loop.
+	// - Replace our `console.log`, and instead `push` all of the data into the `table` array.
+	//   - `table.push({ rank, displayName, address, balance })`
+	const address = "15DCZocYEM2ThYCAj22QE4QENRvUNVrDtoLBVbCm5x4EQncr"
+	const balance = await getBalance(polkadotClient, address);
+	const displayName = await getDisplayName(peopleClient, address);
+	console.log(`Balance of ${displayName} (${address}) is ${balance}.`);
+
+	// TODO:
+	// - We can sort the table by `rank`: `table.sort((a, b) =&gt; b.rank - a.rank)`.
+	// - Finally, print the table using `console.table(table)`, rather than `console.log`.
+
+	console.log(`Done!`);
+	process.exit(0);
+}
+
+main()
+</code></pre>
+</div>
+</div>
+<div id="Solution" class="maintab tabcontent">
+<div class="tab">
+<button class="subtab tablinks file-solution file-modified active" onclick="switchSubTab(event, 'index.ts')" data-id="index.ts">index.ts</button>
+</div>
+<div id="solution/index.ts" class="subtab tabcontent active" data-id="index.ts">
+<pre><code class="language-ts">import process from 'node:process';
+import { getWsProvider } from "polkadot-api/ws-provider/web";
+import { createClient, type PolkadotClient, type SS58String } from "polkadot-api";
+import { dot, people, collectives } from "@polkadot-api/descriptors";
+
+function makeClient(endpoint: string): PolkadotClient {
+	console.log(`Connecting to endpoint: ${endpoint}`);
+	const provider = getWsProvider(endpoint);
+	const client = createClient(provider);
+	return client;
+}
+
+async function printChainInfo(client: PolkadotClient) {
+	const chainSpec = await client.getChainSpecData()
+	const finalizedBlock = await client.getFinalizedBlock();
+	console.log(`Connected to ${chainSpec.name} at block ${finalizedBlock.number}.\n`);
+}
+
+async function getBalance(polkadotClient: PolkadotClient, address: SS58String): Promise&lt;BigInt&gt; {
+	const dotApi = polkadotClient.getTypedApi(dot);
+	const accountInfo = await dotApi.query.System.Account.getValue(address);
+	const { free, reserved } = accountInfo.data;
+	return free + reserved;
+}
+
+async function getDisplayName(peopleClient: PolkadotClient, address: SS58String): Promise&lt;string | undefined&gt; {
+	const peopleApi = peopleClient.getTypedApi(people);
+	const accountInfo = await peopleApi.query.Identity.IdentityOf.getValue(address);
+	const displayName = accountInfo?.[0].info.display.value?.asText();
+	return displayName;
+}
+
+interface FellowshipMember {
+	address: SS58String;
+	rank: number;
+}
+
+async function getFellowshipMembers(collectivesClient: PolkadotClient): Promise&lt;FellowshipMember[]&gt; {
+	const collectivesApi = collectivesClient.getTypedApi(collectives);
+	const rawMembers = await collectivesApi.query.FellowshipCollective.Members.getEntries();
+	const data = rawMembers.map((m) =&gt; { return { address: m.keyArgs[0], rank: m.value } });
+	return data;
+}
+
+async function main() {
+	const polkadotClient = makeClient("wss://rpc.polkadot.io");
+	await printChainInfo(polkadotClient);
+
+	const peopleClient = makeClient("wss://polkadot-people-rpc.polkadot.io");
+	await printChainInfo(peopleClient);
+
+	const collectivesClient = makeClient("wss://polkadot-collectives-rpc.polkadot.io");
+	await printChainInfo(collectivesClient);
+
+	const members = await getFellowshipMembers(collectivesClient);
+
+	console.log("Generating table...")
+	const table = [];
+	for (const { address, rank } of members) {
+		const balance = await getBalance(polkadotClient, address);
+		const displayName = await getDisplayName(peopleClient, address);
+		table.push({ rank, displayName, address, balance });
+	}
+
+	table.sort((a, b) =&gt; b.rank - a.rank);
+	console.table(table);
+
+	console.log(`Done!`);
+	process.exit(0);
+}
+
+main()
+</code></pre>
+</div>
+</div>
+<div id="Diff" class="maintab tabcontent">
+<div class="tab">
+	<button class="difftab tablinks active" onclick="switchDiff(event, 'template.diff')" data-id="template.diff">template.diff</button>
+	<button class="difftab tablinks" onclick="switchDiff(event, 'solution.diff')" data-id="solution.diff">solution.diff</button>
+</div>
+<div id="template.diff" class="difftab tabcontent active" data-id="template.diff">
+<pre><code class="language-diff">diff --git a/index.ts b/index.ts
+index 882349c..4f33f11 100644
+--- a/index.ts
++++ b/index.ts
+@@ -1,6 +1,7 @@
+ import process from 'node:process';
+ import { getWsProvider } from "polkadot-api/ws-provider/web";
+ import { createClient, type PolkadotClient, type SS58String } from "polkadot-api";
++// TODO: Import `collectives` from `"@polkadot-api/descriptors"`.
+ import { dot, people } from "@polkadot-api/descriptors";
+ 
+ function makeClient(endpoint: string): PolkadotClient {
+@@ -11,9 +12,9 @@ function makeClient(endpoint: string): PolkadotClient {
+ }
+ 
+ async function printChainInfo(client: PolkadotClient) {
+-	const chain = await client.getChainSpecData()
++	const chainSpec = await client.getChainSpecData()
+ 	const finalizedBlock = await client.getFinalizedBlock();
+-	console.log(`Connected to ${chain.name} at block ${finalizedBlock.number}.\n`);
++	console.log(`Connected to ${chainSpec.name} at block ${finalizedBlock.number}.\n`);
+ }
+ 
+ async function getBalance(polkadotClient: PolkadotClient, address: SS58String): Promise&lt;BigInt&gt; {
+@@ -30,6 +31,30 @@ async function getDisplayName(peopleClient: PolkadotClient, address: SS58String)
+ 	return displayName;
+ }
+ 
++// TODO:
++// - Create a new type safe `interface` called `FellowshipMember`.
++//   - It has two fields:
++//     - `address` which is of type `SS58String`.
++//     - `rank` which is of type `number`.
++
++// TODO:
++// - Create a new `async` function `getFellowshipMembers`:
++//   - It has a single parameter `collectivesClient` of type `PolkadotClient`.
++//   - It returns an array of fellowship members: `Promise&lt;FellowshipMember[]&gt;`.
++// - Write the logic of the `getFellowshipMembers` function:
++//   - Call the `getTypedApi` method on the `collectivesClient` variable.
++//     - The `getTypedApi` method should include the parameter `collectives`, which we imported above.
++//     - Assign the result to a new constant `collectivesApi`.
++//   - Call `collectivesApi.query.FellowshipCollective.Members.getEntries()`.
++//   - `await` the result, and assign it to a new constant `rawMembers`.
++//   - Extract the `address` and `rank` from `rawMembers`:
++//     - `map` the items of `rawMembers` to access the individual members `m`.
++//     - You can access the `address` of the member by calling `m.keyArgs[0]`.
++//     - You can access the `rank` of the member by calling `m.value`.
++//     - Assign the mapped data to a new constant `fellowshipMembers`.
++//       - Make sure the data is in the structure of `FellowshipMember`.
++//   - Return the `fellowshipMembers` constant.
++
+ async function main() {
+ 	const polkadotClient = makeClient("wss://rpc.polkadot.io");
+ 	await printChainInfo(polkadotClient);
+@@ -37,11 +62,31 @@ async function main() {
+ 	const peopleClient = makeClient("wss://polkadot-people-rpc.polkadot.io");
+ 	await printChainInfo(peopleClient);
+ 
++	// TODO:
++	// - Make a new client connection to `"wss://polkadot-collectives-rpc.polkadot.io"`.
++	// - Assign the result to a constant `collectivesClient`.
++	// - Call `printChainInfo(collectivesClient)` and await the result.
++
++	// TODO:
++	// - Call `getFellowshipMembers` with the parameter `collectivesClient`.
++	// - `await` the result, and assign it to a new constant `members`.
++
++	// TODO:
++	// - Create a new constant `table` which is an empty array that we will fill.
++	// - Create a `for` loop over `members`, extracting the `address` and `rank`.
++	// - Rather than use the hardcoded address below, use the `address` variable from `members`.
++	// - Bring the logic to get the `balance` and `displayName` into your loop.
++	// - Replace our `console.log`, and instead `push` all of the data into the `table` array.
++	//   - `table.push({ rank, displayName, address, balance })`
+ 	const address = "15DCZocYEM2ThYCAj22QE4QENRvUNVrDtoLBVbCm5x4EQncr"
+ 	const balance = await getBalance(polkadotClient, address);
+ 	const displayName = await getDisplayName(peopleClient, address);
+ 	console.log(`Balance of ${displayName} (${address}) is ${balance}.`);
+ 
++	// TODO:
++	// - We can sort the table by `rank`: `table.sort((a, b) =&gt; b.rank - a.rank)`.
++	// - Finally, print the table using `console.table(table)`, rather than `console.log`.
++
+ 	console.log(`Done!`);
+ 	process.exit(0);
+ }
+</code></pre>
+</div>
+<div id="solution.diff" class="difftab tabcontent" data-id="solution.diff">
+<pre><code class="language-diff">diff --git a/index.ts b/index.ts
+index 4f33f11..f067893 100644
+--- a/index.ts
++++ b/index.ts
+@@ -1,8 +1,7 @@
+ import process from 'node:process';
+ import { getWsProvider } from "polkadot-api/ws-provider/web";
+ import { createClient, type PolkadotClient, type SS58String } from "polkadot-api";
+-// TODO: Import `collectives` from `"@polkadot-api/descriptors"`.
+-import { dot, people } from "@polkadot-api/descriptors";
++import { dot, people, collectives } from "@polkadot-api/descriptors";
+ 
+ function makeClient(endpoint: string): PolkadotClient {
+ 	console.log(`Connecting to endpoint: ${endpoint}`);
+@@ -31,29 +30,17 @@ async function getDisplayName(peopleClient: PolkadotClient, address: SS58String)
+ 	return displayName;
+ }
+ 
+-// TODO:
+-// - Create a new type safe `interface` called `FellowshipMember`.
+-//   - It has two fields:
+-//     - `address` which is of type `SS58String`.
+-//     - `rank` which is of type `number`.
++interface FellowshipMember {
++	address: SS58String;
++	rank: number;
++}
+ 
+-// TODO:
+-// - Create a new `async` function `getFellowshipMembers`:
+-//   - It has a single parameter `collectivesClient` of type `PolkadotClient`.
+-//   - It returns an array of fellowship members: `Promise&lt;FellowshipMember[]&gt;`.
+-// - Write the logic of the `getFellowshipMembers` function:
+-//   - Call the `getTypedApi` method on the `collectivesClient` variable.
+-//     - The `getTypedApi` method should include the parameter `collectives`, which we imported above.
+-//     - Assign the result to a new constant `collectivesApi`.
+-//   - Call `collectivesApi.query.FellowshipCollective.Members.getEntries()`.
+-//   - `await` the result, and assign it to a new constant `rawMembers`.
+-//   - Extract the `address` and `rank` from `rawMembers`:
+-//     - `map` the items of `rawMembers` to access the individual members `m`.
+-//     - You can access the `address` of the member by calling `m.keyArgs[0]`.
+-//     - You can access the `rank` of the member by calling `m.value`.
+-//     - Assign the mapped data to a new constant `fellowshipMembers`.
+-//       - Make sure the data is in the structure of `FellowshipMember`.
+-//   - Return the `fellowshipMembers` constant.
++async function getFellowshipMembers(collectivesClient: PolkadotClient): Promise&lt;FellowshipMember[]&gt; {
++	const collectivesApi = collectivesClient.getTypedApi(collectives);
++	const rawMembers = await collectivesApi.query.FellowshipCollective.Members.getEntries();
++	const data = rawMembers.map((m) =&gt; { return { address: m.keyArgs[0], rank: m.value } });
++	return data;
++}
+ 
+ async function main() {
+ 	const polkadotClient = makeClient("wss://rpc.polkadot.io");
+@@ -62,30 +49,21 @@ async function main() {
+ 	const peopleClient = makeClient("wss://polkadot-people-rpc.polkadot.io");
+ 	await printChainInfo(peopleClient);
+ 
+-	// TODO:
+-	// - Make a new client connection to `"wss://polkadot-collectives-rpc.polkadot.io"`.
+-	// - Assign the result to a constant `collectivesClient`.
+-	// - Call `printChainInfo(collectivesClient)` and await the result.
++	const collectivesClient = makeClient("wss://polkadot-collectives-rpc.polkadot.io");
++	await printChainInfo(collectivesClient);
+ 
+-	// TODO:
+-	// - Call `getFellowshipMembers` with the parameter `collectivesClient`.
+-	// - `await` the result, and assign it to a new constant `members`.
++	const members = await getFellowshipMembers(collectivesClient);
+ 
+-	// TODO:
+-	// - Create a new constant `table` which is an empty array that we will fill.
+-	// - Create a `for` loop over `members`, extracting the `address` and `rank`.
+-	// - Rather than use the hardcoded address below, use the `address` variable from `members`.
+-	// - Bring the logic to get the `balance` and `displayName` into your loop.
+-	// - Replace our `console.log`, and instead `push` all of the data into the `table` array.
+-	//   - `table.push({ rank, displayName, address, balance })`
+-	const address = "15DCZocYEM2ThYCAj22QE4QENRvUNVrDtoLBVbCm5x4EQncr"
+-	const balance = await getBalance(polkadotClient, address);
+-	const displayName = await getDisplayName(peopleClient, address);
+-	console.log(`Balance of ${displayName} (${address}) is ${balance}.`);
++	console.log("Generating table...")
++	const table = [];
++	for (const { address, rank } of members) {
++		const balance = await getBalance(polkadotClient, address);
++		const displayName = await getDisplayName(peopleClient, address);
++		table.push({ rank, displayName, address, balance });
++	}
+ 
+-	// TODO:
+-	// - We can sort the table by `rank`: `table.sort((a, b) =&gt; b.rank - a.rank)`.
+-	// - Finally, print the table using `console.table(table)`, rather than `console.log`.
++	table.sort((a, b) =&gt; b.rank - a.rank);
++	console.table(table);
+ 
+ 	console.log(`Done!`);
+ 	process.exit(0);
+</code></pre>
+</div>
+</div>
+</div>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../7/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../7/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../custom/tabs.js"></script>
+
+
+    </div>
+    </body>
+</html>
