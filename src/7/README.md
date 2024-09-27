@@ -21,7 +21,7 @@
 </div>
 <div id="template/index.ts" class="subtab tabcontent active" data-id="index.ts">
 
-```text
+```ts
 {{#include ./template/index.ts}}
 ```
 
@@ -38,7 +38,7 @@
 </div>
 <div id="solution/index.ts" class="subtab tabcontent active" data-id="index.ts">
 
-```text
+```ts
 {{#include ./solution/index.ts}}
 ```
 

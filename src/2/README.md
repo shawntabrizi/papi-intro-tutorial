@@ -28,7 +28,7 @@
 
 <div id="source/package.json" class="subtab tabcontent" data-id="package.json">
 
-```text
+```json
 {{#include ./source/package.json}}
 ```
 

@@ -30,7 +30,7 @@
 
 <div id="source/index.ts" class="subtab tabcontent" data-id="index.ts">
 
-```text
+```ts
 {{#include ./source/index.ts}}
 ```
 
@@ -38,7 +38,7 @@
 
 <div id="source/package.json" class="subtab tabcontent" data-id="package.json">
 
-```text
+```json
 {{#include ./source/package.json}}
 ```
 
@@ -46,7 +46,7 @@
 
 <div id="source/tsconfig.json" class="subtab tabcontent" data-id="tsconfig.json">
 
-```text
+```json
 {{#include ./source/tsconfig.json}}
 ```
 
