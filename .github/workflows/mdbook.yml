@@ -8,7 +8,7 @@ on:
   # Runs on pushes targeting the default branch
   push:
     # You probably want to change this to `mdbook` or whatever branch you are using.
-    branches: ["master"]
+    branches: ["main"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
