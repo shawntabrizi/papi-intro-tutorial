@@ -1,8 +1,5 @@
-# TODO
+# Solution
 
-- describe people chain
-- explain `people` descriptor
-- explain `peopleApi.query`
-- Identity.IdentityOf
-- accountInfo?.[0].info.display.value?.asText()
-- explain possibly undefined
+You can find the solution to the previous step here.
+
+<!-- Generally, this page is not shown to the user. -->
